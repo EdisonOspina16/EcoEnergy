@@ -3,37 +3,42 @@ sys.path.append("src")
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
+from werkzeug.security import check_password_hash, generate_password_hash
 from model.usuario import Usuario
 from SecretConfig import PGHOST, PGDATABASE, PGUSER, PGPASSWORD
-from werkzeug.security import check_password_hash, generate_password_hash
+
 
 def obtener_conexion():
     """
-    Coneccion a la base de datos.
-    
+    Conexión a la base de datos.
     """
     try:
-        conn = psycopg2.connect(
+        return psycopg2.connect(
             host=PGHOST,
             database=PGDATABASE,
             user=PGUSER,
             password=PGPASSWORD
         )
-        return conn
     except Exception as e:
         print("Error de conexión:", e)
         return None
 
-# CRUD ->
-# Crear un nuevo usuario
+# -----------------------------------------
+# CRUD USUARIOS
+# -----------------------------------------
+
 def crear_usuario(nombre, correo, contraseña):
+    """
+    Crea un nuevo usuario con la contraseña hasheada.
+    """
     conn = obtener_conexion()
     if conn:
         try:
+            hash_contraseña = generate_password_hash(contraseña)
             with conn.cursor() as cur:
                 cur.execute(
                     "INSERT INTO usuarios (nombre, correo, contraseña) VALUES (%s, %s, %s)",
-                    (nombre, correo, contraseña)
+                    (nombre, correo, hash_contraseña)
                 )
                 conn.commit()
                 return True
@@ -43,30 +48,33 @@ def crear_usuario(nombre, correo, contraseña):
             conn.close()
     return False
 
-# Obtener usuario por correo
+
 def obtener_usuario_por_correo(correo):
     conn = obtener_conexion()
     if conn:
         try:
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute("SELECT * FROM usuarios WHERE correo = %s", (correo,))
-                usuario = cur.fetchone()
-                return usuario
+                return cur.fetchone()
         except Exception as e:
             print("Error al obtener usuario:", e)
         finally:
             conn.close()
     return None
 
-# Actualizar usuario
+
 def actualizar_usuario(correo, nuevo_nombre, nueva_contraseña):
+    """
+    Actualiza nombre y contraseña (la contraseña será hasheada).
+    """
     conn = obtener_conexion()
     if conn:
         try:
+            hash_contraseña = generate_password_hash(nueva_contraseña)
             with conn.cursor() as cur:
                 cur.execute(
                     "UPDATE usuarios SET nombre = %s, contraseña = %s WHERE correo = %s",
-                    (nuevo_nombre, nueva_contraseña, correo)
+                    (nuevo_nombre, hash_contraseña, correo)
                 )
                 conn.commit()
                 return True
@@ -76,7 +84,7 @@ def actualizar_usuario(correo, nuevo_nombre, nueva_contraseña):
             conn.close()
     return False
 
-# Eliminar usuario
+
 def eliminar_usuario(correo):
     conn = obtener_conexion()
     if conn:
@@ -91,17 +99,24 @@ def eliminar_usuario(correo):
             conn.close()
     return False
 
-# Funciones Del Sistema.
-# Registrar un nuevo usuario
+# -----------------------------------------
+# FUNCIONES DEL SISTEMA
+# -----------------------------------------
+
 def registrar_usuario(nombre, correo, contraseña):
+    """
+    Registra un usuario nuevo con contraseña hasheada.
+    """
     try:
         conn = obtener_conexion()
         cur = conn.cursor()
 
+        hash_contraseña = generate_password_hash(contraseña)
+
         cur.execute("""
             INSERT INTO usuarios (nombre, correo, contraseña)
             VALUES (%s, %s, %s)
-        """, (nombre, correo, contraseña))
+        """, (nombre, correo, hash_contraseña))
 
         conn.commit()
         cur.close()
@@ -111,8 +126,11 @@ def registrar_usuario(nombre, correo, contraseña):
         print(f"Error al registrar usuario: {e}")
         return False
 
-# Obtener todos los usuarios registrados
+
 def obtener_usuarios():
+    """
+    Retorna una lista de objetos Usuario.
+    """
     usuarios = []
     try:
         conn = obtener_conexion()
@@ -134,14 +152,14 @@ def obtener_usuarios():
         cur.close()
         conn.close()
     except Exception as e:
-        print(f" Error al obtener usuarios: {e}")
+        print(f"Error al obtener usuarios: {e}")
     return usuarios
-
-from werkzeug.security import check_password_hash
 
 
 def verificar_credenciales(correo, contraseña_input):
-    #login
+    """
+    Verifica si el correo y la contraseña (comparada con hash) coinciden.
+    """
     try:
         conn = obtener_conexion()
         cur = conn.cursor(cursor_factory=RealDictCursor)
@@ -153,15 +171,17 @@ def verificar_credenciales(correo, contraseña_input):
         conn.close()
 
         if usuario and check_password_hash(usuario['contraseña'], contraseña_input):
-            return usuario  # Retorna dict con los datos
-        else:
-            return None
+            return usuario
+        return None
     except Exception as e:
         print(f"Error en login: {e}")
         return None
 
+
 def actualizar_contraseña(correo, nueva_contraseña):
-    #olvido su contraseña??
+    """
+    Actualiza la contraseña de un usuario con hashing.
+    """
     try:
         conn = obtener_conexion()
         cur = conn.cursor()
@@ -177,7 +197,7 @@ def actualizar_contraseña(correo, nueva_contraseña):
         cur.close()
         conn.close()
 
-        return cur.rowcount > 0  # Retorna True si se actualizó
+        return cur.rowcount > 0
     except Exception as e:
         print(f"Error al actualizar contraseña: {e}")
         return False

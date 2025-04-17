@@ -10,7 +10,7 @@ blueprint = Blueprint('vista_usuarios', __name__, "Templates")
 # se define por ahora asi, pero el home seria el calculo.
 @blueprint.route('/')
 def inicio():
-    return redirect(url_for('vista_usuarios.login'))
+    return "<h1>Bienvenido a EcoEnergy 🌱</h1>"
 
 
 # Ruta para mostrar el formulario de registro
@@ -22,6 +22,7 @@ def registro():
         contraseña = request.form['contraseña']
 
         exito = registrar_usuario(nombre, correo, contraseña)
+
         if exito:
             flash("Usuario registrado con éxito", "success")
             return redirect(url_for('vista_usuarios.login'))
@@ -41,7 +42,8 @@ def login():
 
         if usuario:
             flash("Inicio de sesión exitoso", "success")
-            return redirect(url_for('vista_usuarios.lista_usuarios'))
+            #return redirect(url_for('vista_usuarios.inicio'))
+            return redirect('/')
         else:
             flash("Correo o contraseña incorrectos", "danger")
 

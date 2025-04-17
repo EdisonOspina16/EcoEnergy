@@ -9,10 +9,10 @@
     <header>ECOENERGY</header>
     <div class="container">
         <h1>CREAR CUENTA</h1>
-        <form>
-            <input type="text" placeholder="Nombre completo" required>
-            <input type="email" placeholder="TU@CORREO.COM" required>
-            <input type="password" placeholder="Contraseña" required>
+        <form method="POST" action="{{ url_for('vista_usuarios.registro') }}">
+            <input type="text" name="nombre" placeholder="Nombre completo" required>
+            <input type="email" name="correo" placeholder="TU@CORREO.COM" required>
+            <input type="password" name="contraseña" placeholder="Contraseña" required>
             <button type="submit">Registrarse</button>
         </form>
         <a href="{{ url_for('vista_usuarios.login') }}">¿Ya tienes cuenta?</a>

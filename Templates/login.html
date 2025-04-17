@@ -11,11 +11,11 @@
         <div class="icono">💡</div>
         <h1>INICIAR SESIÓN</h1>
         <p>Inicia sesión para continuar</p>
-        <form>
-            <input type="email" placeholder="TU@CORREO.COM" required>
-            <input type="password" placeholder="********" required>
+        <form method="POST" action="{{ url_for('vista_usuarios.login') }}">
+            <input type="email" name="correo" placeholder="TU@CORREO.COM" required>
+            <input type="password" name="contraseña" placeholder="********" required>
             <button type="submit">Ingresar</button>
-        </form>
+        </form>        
         <a href="{{ url_for('vista_usuarios.registro') }}">¿No tienes cuenta?</a>
         <a href="{{ url_for('vista_usuarios.recuperar') }}">¿Olvidaste tu contraseña?</a>        
     </div>

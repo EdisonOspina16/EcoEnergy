@@ -9,6 +9,8 @@ from src.view_web import vista_usuarios
 
 app = Flask(__name__)
 
+app.secret_key = 'clave_secreta_super_segura_ecoenergy_123'
+
 
 # Registramos los Blueprints que creamos 
 app.register_blueprint(vista_usuarios.blueprint)

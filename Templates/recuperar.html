@@ -9,10 +9,10 @@
     <header>ECOENERGY</header>
     <div class="container">
         <h1>¿Has olvidado la contraseña?</h1>
-        <p>Nueva contraseña</p>
-        <form>
-            <input type="email" placeholder="TU@CORREO.COM" required>
-            <button type="submit">Ingresar</button>
+        <form method="POST" action="{{ url_for('vista_usuarios.recuperar') }}">
+            <input type="email" name="correo" placeholder="TU@CORREO.COM" required>
+            <input type="password" name="nueva_contraseña" placeholder="Nueva contraseña" required>
+            <button type="submit">Recuperar</button>
         </form>
     </div>
 </body>
