@@ -6,6 +6,13 @@ from controller.controladorUsuarios import registrar_usuario, obtener_usuarios, 
 
 blueprint = Blueprint('vista_usuarios', __name__, "Templates")
 
+
+# se define por ahora asi, pero el home seria el calculo.
+@blueprint.route('/')
+def inicio():
+    return redirect(url_for('vista_usuarios.login'))
+
+
 # Ruta para mostrar el formulario de registro
 @blueprint.route('/registro', methods=['GET', 'POST'])
 def registro():

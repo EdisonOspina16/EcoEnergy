@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Iniciar Sesión - EcoEnergy</title>
-    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
 </head>
 <body>
     <header>ECOENERGY</header>
@@ -16,8 +16,8 @@
             <input type="password" placeholder="********" required>
             <button type="submit">Ingresar</button>
         </form>
-        <a href="registro.html">¿No tienes cuenta?</a>
-        <a href="recuperar.html">¿Olvidaste tu contraseña?</a>
+        <a href="{{ url_for('vista_usuarios.registro') }}">¿No tienes cuenta?</a>
+        <a href="{{ url_for('vista_usuarios.recuperar') }}">¿Olvidaste tu contraseña?</a>        
     </div>
 </body>
 </html>
