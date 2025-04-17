@@ -4,10 +4,10 @@ sys.path.append("src")
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from controller.controladorUsuarios import registrar_usuario, obtener_usuarios, verificar_credenciales, actualizar_contraseña
 
-vista_usuarios = Blueprint('vista_usuarios', __name__)
+blueprint = Blueprint('vista_usuarios', __name__, "Templates")
 
 # Ruta para mostrar el formulario de registro
-@vista_usuarios.route('/registro', methods=['GET', 'POST'])
+@blueprint.route('/registro', methods=['GET', 'POST'])
 def registro():
     if request.method == 'POST':
         nombre = request.form['nombre']
@@ -24,19 +24,7 @@ def registro():
     return render_template('registro.html')
 
 
-# Ruta para mostrar el login
-@vista_usuarios.route('/login', methods=['GET'])
-def login():
-    return render_template('login.html')
-
-
-# Ruta para mostrar usuarios (solo como ejemplo)
-@vista_usuarios.route('/usuarios')
-def lista_usuarios():
-    usuarios = obtener_usuarios()
-    return render_template('lista_usuarios.html', usuarios=usuarios)
-
-@vista_usuarios.route('/login', methods=['GET', 'POST'])
+@blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         correo = request.form['correo']
@@ -52,7 +40,8 @@ def login():
 
     return render_template('login.html')
 
-@vista_usuarios.route('/recuperar', methods=['GET', 'POST'])
+
+@blueprint.route('/recuperar', methods=['GET', 'POST'])
 def recuperar():
     if request.method == 'POST':
         correo = request.form['correo']
@@ -66,3 +55,10 @@ def recuperar():
             flash("No se encontró el correo", "danger")
 
     return render_template('recuperar.html')
+
+
+# Ruta para mostrar usuarios (solo como ejemplo, puede servir para el admin)
+@blueprint.route('/usuarios')
+def lista_usuarios():
+    usuarios = obtener_usuarios()
+    return render_template('lista_usuarios.html', usuarios=usuarios)

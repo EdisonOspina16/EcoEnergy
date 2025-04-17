@@ -1,15 +1,18 @@
+import sys
+sys.path.append("src")
+
 from flask import Flask
-from src.view_web.vista_usuarios import vista_usuarios  # importás el blueprint
+from flask import render_template
+
+from src.view_web import vista_usuarios
+
 
 app = Flask(__name__)
 
-# Clave secreta para manejar sesiones y mensajes flash
-app.secret_key = 'clave_super_secreta_ecoenergy'  # poné algo más seguro si es producción
 
-# Ruta raíz opcional
-@app.route('/')
-def inicio():
-    return "<h1>Bienvenido a EcoEnergy 🌱</h1>"
+# Registramos los Blueprints que creamos 
+app.register_blueprint(vista_usuarios.blueprint)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
