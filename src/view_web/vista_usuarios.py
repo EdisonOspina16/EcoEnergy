@@ -1,5 +1,8 @@
+import sys
+sys.path.append("src")
+
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from src.controller.controladorUsuarios import registrar_usuario, obtener_usuarios, verificar_credenciales, actualizar_contraseña
+from controller.controladorUsuarios import registrar_usuario, obtener_usuarios, verificar_credenciales, actualizar_contraseña
 
 vista_usuarios = Blueprint('vista_usuarios', __name__)
 

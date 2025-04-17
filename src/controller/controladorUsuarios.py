@@ -1,6 +1,9 @@
+import sys
+sys.path.append("src")
+
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from src.model.usuario import Usuario
+from model.usuario import Usuario
 from SecretConfig import PGHOST, PGDATABASE, PGUSER, PGPASSWORD
 from werkzeug.security import check_password_hash, generate_password_hash
 
