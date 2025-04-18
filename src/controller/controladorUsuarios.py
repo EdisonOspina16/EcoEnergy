@@ -100,7 +100,7 @@ def eliminar_usuario(correo):
     return False
 
 # -----------------------------------------
-# FUNCIONES DEL SISTEMA
+# FUNCIONES DEL REGISTRO, LOGIN, RECUPERAR
 # -----------------------------------------
 
 def registrar_usuario(nombre, correo, contraseña):
@@ -201,3 +201,8 @@ def actualizar_contraseña(correo, nueva_contraseña):
     except Exception as e:
         print(f"Error al actualizar contraseña: {e}")
         return False
+
+# -----------------------------------------
+# FUNCIONES PARA EL HOME-ADMIN.
+# -----------------------------------------
+
