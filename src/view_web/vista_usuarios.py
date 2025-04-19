@@ -15,7 +15,6 @@ from controller.controladorDispositivos import (
 blueprint = Blueprint('vista_usuarios', __name__, "Templates")
 
 
-# se define por ahora asi, pero el home seria el calculo.
 @blueprint.route('/')
 def inicio():
     return render_template('inicio.html')
