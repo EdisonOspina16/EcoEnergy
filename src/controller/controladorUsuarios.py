@@ -202,6 +202,50 @@ def actualizar_contraseña(correo, nueva_contraseña):
         print(f"Error al actualizar contraseña: {e}")
         return False
 
+
+
+
+
+#para mostrar los datos del usuario 
+def obtener_usuario_por_id (id_usuario):
+    
+    try:
+        conn = obtener_conexion()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+
+        cur.execute("SELECT * FROM usuarios WHERE id = %s", (id_usuario,))
+        fila = cur.fetchone()
+
+        cur.close()
+        conn.close()
+
+        if fila:
+            return Usuario(
+                id=fila['id'],
+                nombre=fila['nombre'],
+                correo=fila['correo'],
+                contraseña=fila['contraseña'],
+                fecha_registro=fila['fecha_registro']
+            )
+    except Exception as e:
+        print(f"Error al obtener usuario por ID: {e}")
+    return None
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # -----------------------------------------
 # FUNCIONES PARA EL HOME-ADMIN.
 # -----------------------------------------

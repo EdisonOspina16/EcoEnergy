@@ -1,8 +1,15 @@
 import sys
 sys.path.append("src")
+from functools import wraps
 
-from flask import Blueprint, render_template, request, redirect, url_for, flash
-from controller.controladorUsuarios import registrar_usuario, obtener_usuarios, verificar_credenciales, actualizar_contraseña
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from controller.controladorUsuarios import (
+    registrar_usuario, 
+    obtener_usuarios, 
+    verificar_credenciales, 
+    actualizar_contraseña, 
+    obtener_usuario_por_id
+)
 from controller.controladorDispositivos import (
     obtener_productos_y_dispositivos,
     agregar_producto,
@@ -12,9 +19,20 @@ from controller.controladorDispositivos import (
     actualizar_dispositivo
 )
 
-blueprint = Blueprint('vista_usuarios', __name__, "Templates")
+blueprint = Blueprint('vista_usuarios', __name__, template_folder= "Templates")
 
 
+# para que no lo deje ver el perfil si el usario no esta iniciado 
+def login_requerido(f):
+    @wraps(f)
+    def decorador(*args, **kwargs):
+        if 'usuario_id' not in session:
+            flash("Debes iniciar sesión para acceder a esta página", "warning")
+            return redirect(url_for('vista_usuarios.login'))
+        return f(*args, **kwargs)
+    return decorador
+
+# se define por ahora asi, pero el home seria el calculo.
 @blueprint.route('/')
 def inicio():
     return render_template('inicio.html')
@@ -39,6 +57,9 @@ def registro():
     return render_template('registro.html')
 
 
+
+
+
 @blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -47,14 +68,27 @@ def login():
 
         usuario = verificar_credenciales(correo, contraseña)
 
+# PARA GUARDAR EL INICIO DE SESION TAMBIEN
         if usuario:
+            session['usuario_id'] = usuario['id']
+            session['usuario_nombre'] = usuario['nombre']
+            session['usuario_correo'] = usuario['correo']
             flash("Inicio de sesión exitoso", "success")
-            #return redirect(url_for('vista_usuarios.inicio'))
             return redirect('/')
         else:
-            flash("Correo o contraseña incorrectos", "danger")
+            flash("Credenciales inválidas", "danger")
 
-    return render_template('login.html')
+    return render_template('login.html')    
+
+# PARA CERRAR SESION
+@blueprint.route('/logout')
+def logout():
+    session.clear()
+    flash("Sesión cerrada", "info")
+    return redirect(url_for('vista_usuarios.login'))
+
+
+
 
 
 @blueprint.route('/recuperar', methods=['GET', 'POST'])
@@ -150,3 +184,11 @@ def ruta_actualizar_dispositivo(dispositivo_id):
     actualizar_dispositivo(dispositivo_id, id_producto)
     return redirect(url_for('vista_usuarios.index'))
 
+#perfil-------------------------
+@blueprint.route('/perfil')
+@login_requerido
+def perfil():
+    usuario_id = session.get('usuario_id')
+    usuario = obtener_usuario_por_id(usuario_id) if usuario_id else None
+
+    return render_template('perfil.html', usuario=usuario)

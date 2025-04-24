@@ -391,7 +391,10 @@
             <div class="profile-pic">
                 <div class="user-pic"></div>
             </div>
-            <div class="email" id="userEmail">Tu@Correo.com</div>
+            <div class="email">
+                <strong>{{ usuario.correo }}</strong><br>
+            
+            </div>
         </div>
         <button class="edit-btn" id="editProfileBtn">Editar</button>
     </div>
@@ -403,7 +406,7 @@
             </div>
             <div class="info-content">
                 <div class="info-title">DATOS PERSONALES</div>
-                <div class="info-value" id="personalDataValue">Agregar datos personales</div>
+                <div class="info-value" id="personalDataValue">{{ usuario.nombre }}</div>
             </div>
         </div>
         
@@ -423,7 +426,7 @@
             </div>
             <div class="info-content">
                 <div class="info-title">EMAILS</div>
-                <div class="info-value" id="emailValue">tu@correo.com</div>
+                <div class="info-value" id="emailValue">{{ usuario.correo }}</div>
             </div>
         </div>
         
@@ -454,7 +457,8 @@
             <div class="profile-pic">
                 <div class="user-pic"></div>
             </div>
-            <div class="greeting-text">Hola, Usuario</div>
+            <div class="greeting-text">Hola, {{ usuario.nombre }}</div>
+
         </div>
         <div class="menu-options">
             <div class="menu-item">
@@ -521,7 +525,7 @@
             </div>
             <div class="form-group">
                 <label for="email">Correo electrónico</label>
-                <input type="email" id="email" value="tu@correo.com">
+                <input type="email" id="email" value="{{ usuario.correo }}">
             </div>
             <div class="modal-footer">
                 <button class="btn btn-cancel closeModal">Cancelar</button>
