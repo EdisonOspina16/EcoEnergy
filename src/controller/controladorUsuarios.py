@@ -171,7 +171,14 @@ def verificar_credenciales(correo, contraseña_input):
         conn.close()
 
         if usuario and check_password_hash(usuario['contraseña'], contraseña_input):
-            return usuario
+            return Usuario(
+                id=usuario['id'],
+                nombre=usuario['nombre'],
+                correo=usuario['correo'],
+                contraseña=usuario['contraseña'],
+                es_admin=usuario['es_admin'],
+                fecha_registro=usuario.get('fecha_registro')
+            )
         return None
     except Exception as e:
         print(f"Error en login: {e}")
@@ -202,6 +209,7 @@ def actualizar_contraseña(correo, nueva_contraseña):
         print(f"Error al actualizar contraseña: {e}")
         return False
 
+<<<<<<< HEAD
 
 
 
@@ -250,3 +258,5 @@ def obtener_usuario_por_id (id_usuario):
 # FUNCIONES PARA EL HOME-ADMIN.
 # -----------------------------------------
 
+=======
+>>>>>>> 67df6a085e60bbe0174c7a69998e32c64f1e486f
