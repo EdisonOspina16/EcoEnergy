@@ -14,7 +14,7 @@ def inicio():
     
     if usuario:
         if usuario.get('es_admin'):
-            return redirect(url_for('vista_admin.bp_admin'))
+            return redirect(url_for('admin.inicio_admin'))
         else:
             return redirect(url_for('vista_usuarios.blueprint'))
     else:

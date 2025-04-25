@@ -11,7 +11,7 @@
             box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
-        
+
         .header {
             background-color:#00695c;
             color: white;
@@ -20,26 +20,26 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .logo {
             display: flex;
             align-items: center;
             font-size: 24px;
             font-weight: bold;
         }
-        
+
         .logo-icon {
             color: #FFD700;
             font-size: 28px;
             margin-left: 10px;
         }
-        
+
         .admin-section {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-        
+
         .admin-badge {
             background-color: #FFD700;
             color: #333;
@@ -49,11 +49,11 @@
             display: flex;
             align-items: center;
         }
-        
+
         .admin-icon {
             margin-right: 5px;
         }
-        
+
         .profile-icon {
             background-color: #fff;
             color:#00695c;
@@ -66,35 +66,35 @@
             font-size: 20px;
             cursor: pointer;
         }
-        
+
         .main-content {
             padding: 30px 0;
             text-align: center;
             border-bottom: 1px solid #e0e0e0;
         }
-        
+
         .main-heading {
             font-size: 28px;
             font-weight: bold;
             margin-bottom: 5px;
         }
-        
+
         .sub-heading {
             font-size: 16px;
         }
-        
+
         .container {
             padding: 20px 40px;
             min-height: 500px;
         }
-        
+
         .panel-title {
             font-size: 20px;
             font-weight: bold;
             margin-bottom: 20px;
             text-align: left;
         }
-        
+
         .device-item {
             display: flex;
             margin-bottom: 15px;
@@ -102,7 +102,7 @@
             position: relative;
             max-width: 800px;
         }
-        
+
         .device-selector {
             flex-grow: 1;
             background-color: #b5e1d9;
@@ -118,11 +118,11 @@
             -webkit-appearance: none;
             -moz-appearance: none;
         }
-        
+
         .device-selector::-ms-expand {
             display: none;
         }
-        
+
         .arrow-icon {
             position: absolute;
             right: 50px;
@@ -130,14 +130,14 @@
             transform: translateY(-50%);
             pointer-events: none;
         }
-        
+
         .delete-btn {
             background: none;
             border: none;
             font-size: 20px;
             cursor: pointer;
         }
-        
+
         .add-device-btn {
             background-color:#00695c;
             color: white;
@@ -148,19 +148,19 @@
             margin-top: 20px;
             font-weight: bold;
         }
-        
+
         .results-section {
             margin-top: 40px;
             max-width: 800px;
         }
-        
+
         .results-title {
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 15px;
             color:#00695c;
         }
-        
+
         .results-placeholder {
             background-color: #f5f5f5;
             padding: 20px;
@@ -168,8 +168,7 @@
             text-align: center;
             color: #666;
         }
-        
-        /* Admin panel styles */
+
         .admin-panel {
             margin-top: 40px;
             padding: 20px;
@@ -178,31 +177,31 @@
             border: 1px solid #ddd;
             max-width: 800px;
         }
-        
+
         .admin-panel h3 {
             margin-bottom: 15px;
             color:#00695c;
         }
-        
+
         .product-form {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             margin-bottom: 20px;
         }
-        
+
         .product-form input, .product-form select {
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
             flex-grow: 1;
         }
-        
+
         .product-form input[type="number"] {
             width: 120px;
             flex-grow: 0;
         }
-        
+
         .add-product-btn {
             background-color:#00695c;
             color: white;
@@ -212,23 +211,23 @@
             cursor: pointer;
             font-weight: bold;
         }
-        
+
         .products-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-        
+
         .products-table th, .products-table td {
             padding: 10px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
-        
+
         .products-table th {
             background-color: #f2f2f2;
         }
-        
+
         .delete-product-btn {
             background-color: #ff4d4d;
             color: white;
@@ -249,9 +248,7 @@
             <div class="admin-badge">
                 <span class="admin-icon">👨‍💻</span> MODO ADMINISTRADOR
             </div>
-            <div class="profile-icon">
-                👤
-            </div>
+            <div class="profile-icon">👤</div>
         </div>
     </div>
 
@@ -259,147 +256,81 @@
         <h1 class="main-heading">CALCULA TUS GASTOS</h1>
         <p class="sub-heading">+EFICIENCIA -CONSUMO +DINERO</p>
     </div>
-<!--
-    <div class="container">
-        <h2 class="panel-title">INGRESA TUS ELECTRODOMESTICOS</h2>
-        
-        <div id="devices-container">
-            {% for device in devices %}
-            <div class="device-item">
-                <select class="device-selector" id="product-select-{{ loop.index }}" name="device-{{ loop.index }}">
-                    <option value="">Selecciona un producto</option>
-                    {% for category, category_products in products_by_category.items() %}
-                    <optgroup label="{{ category|capitalize }}s">
-                        {% for product in category_products %}
-                        <option value="{{ product.id }}" {% if product.id == device.product_id %}selected{% endif %}>
-                            {{ product.name }} ({{ product.watts }}W)
-                        </option>
-                        {% endfor %}
-                    </optgroup>
-                    {% endfor %}
-                </select>
-                <span class="arrow-icon">▼</span>
-                <button class="delete-btn" data-device-id="{{ device.id }}">🗑️</button>
-            </div>
-            {% endfor %}
 
-            <!-- Si no hay dispositivos seleccionados, mostrar uno vacío 
-            {% if not devices %}
-            <div class="device-item">
-                <select class="device-selector" id="product-select-1" name="device-1">
-                    <option value="" selected>Selecciona un producto</option>
-                    {% for category, category_products in products_by_category.items() %}
-                    <optgroup label="{{ category|capitalize }}s">
-                        {% for product in category_products %}
-                        <option value="{{ product.id }}">
-                            {{ product.name }} ({{ product.watts }}W)
-                        </option>
-                        {% endfor %}
-                    </optgroup>
-                    {% endfor %}
-                </select>
-                <span class="arrow-icon">▼</span>
-                <button class="delete-btn">🗑️</button>
-            </div>
-            {% endif %}
-        </div>
-        
-        <button class="add-device-btn" id="add-device-btn">+ Agregar electrodoméstico</button>
-        
-        <div class="results-section">
-            <h3 class="results-title">Resultados del cálculo:</h3>
-            <div class="results-placeholder">
-                {% if total_watts %}
-                <p>Consumo total estimado: <strong>{{ total_watts }} Watts</strong></p>
-                <p>Consumo diario aproximado: <strong>{{ daily_kwh }} kWh</strong></p>
-                <p>Consumo mensual aproximado: <strong>{{ monthly_kwh }} kWh</strong></p>
-                {% else %}
-                Los resultados se mostrarán aquí después de seleccionar tus electrodomésticos
-                {% endif %}
-            </div>
-        </div>
--->       
-        <!-- Admin Panel for Product Management -->
-        <div class="admin-panel">
-            <h3>Gestión de Productos</h3>
-            <form class="product-form" action="{{ url_for('add_product') }}" method="post">
-                <input type="text" id="product-name" name="product_name" placeholder="Nombre del producto" required>
-                <select id="product-category" name="product_category">
-                    <option value="">Selecciona categoría</option>
-                    <option value="nevera">Nevera</option>
-                    <option value="lavadora">Lavadora</option>
-                    <option value="tv">TV</option>
-                    <option value="microondas">Microondas</option>
-                    <option value="horno">Horno</option>
-                    <option value="licuadora">Licuadora</option>
-                    <option value="otro">Otro</option>
-                </select>
-                <input type="number" id="product-watts" name="product_watts" placeholder="Watts" min="1" required>
-                <button type="submit" class="add-product-btn">Añadir Producto</button>
-            </form>
-            
-            <table class="products-table">
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Categoría</th>
-                        <th>Consumo (W)</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="products-list">
-                    {% for product in products %}
-                    <tr>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.category }}</td>
-                        <td>{{ product.watts }} W</td>
-                        <td>
-                            <form action="{{ url_for('delete_product', product_id=product.id) }}" method="post" style="display: inline;">
-                                <button type="submit" class="delete-product-btn">Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    <div class="admin-panel">
+        <h3>Gestión de Productos</h3>
+        <form class="product-form" action="{{ url_for('admin.crear_dispositivo_route') }}" method="post">
+            <input type="text" id="nombre_producto" name="nombre_producto" placeholder="Nombre del producto" required>
+            <select id="categoria_producto" name="categoria_producto">
+                <option value="">Selecciona categoría</option>
+                <option value="nevera">Nevera</option>
+                <option value="lavadora">Lavadora</option>
+                <option value="tv">TV</option>
+                <option value="microondas">Microondas</option>
+                <option value="horno">Horno</option>
+                <option value="licuadora">Licuadora</option>
+                <option value="otro">Otro</option>
+            </select>
+            <input type="number" id=" " name="consumo_watts" placeholder="Watts" min="1" required>
+            <button type="submit" class="add-product-btn">Añadir Producto</button>
+        </form>
+
+        <table class="products-table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th>Consumo (W)</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="lista_productos">
+                {% for producto in productos %}
+                <tr>
+                    <td>{{ producto.nombre }}</td>
+                    <td>{{ producto.categoria }}</td>
+                    <td>{{ producto.watts }} W</td>
+                    <td>
+                        <form action="{{ url_for('bp_admin.eliminar_dispositivo_route', id=id_producto) }}" method="post" style="display: inline;">
+                            <button type="submit" class="delete-product-btn">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
     <script>
-        // Código JavaScript mínimo para interacciones básicas
         document.addEventListener('DOMContentLoaded', function() {
-            // Manejar el click en el botón de añadir dispositivo
-            document.getElementById('add-device-btn').addEventListener('click', function() {
-                // Aquí usamos un formulario para enviar la solicitud al backend
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '{{ url_for("add_device") }}';
-                document.body.appendChild(form);
-                form.submit();
-            });
-            
-            // Manejar clicks en botones de eliminar dispositivo
-            document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const deviceId = this.getAttribute('data-device-id');
-                    if (deviceId) {
-                        // Aquí usamos un formulario para enviar la solicitud al backend
+            const botonAgregar = document.getElementById('add-device-btn');
+            if (botonAgregar) {
+                botonAgregar.addEventListener('click', function() {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '{{ url_for("admin.crear_dispositivo_route") }}';
+                    document.body.appendChild(form);
+                    form.submit();
+                });
+            }
+
+            document.querySelectorAll('.delete-btn').forEach(boton => {
+                boton.addEventListener('click', function() {
+                    const idDispositivo = this.getAttribute('data-id-dispositivo');
+                    if (idDispositivo) {
                         const form = document.createElement('form');
                         form.method = 'POST';
-                        form.action = '{{ url_for("remove_device", device_id="") }}' + deviceId;
+                        form.action = '{{ url_for("admin.eliminar_dispositivo_route", id=0) }}'.replace('0', idDispositivo);
                         document.body.appendChild(form);
                         form.submit();
                     } else {
-                        // Si es un dispositivo nuevo que no tiene ID todavía
                         this.closest('.device-item').remove();
                     }
                 });
             });
-            
-            // Manejar cambios en selects para actualizar cálculos
+
             document.querySelectorAll('.device-selector').forEach(select => {
                 select.addEventListener('change', function() {
-                    // Enviamos el formulario para actualizar los cálculos
                     this.form.submit();
                 });
             });

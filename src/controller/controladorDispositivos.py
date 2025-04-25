@@ -22,7 +22,7 @@ def obtener_conexion():
 # CRUD DISPOSITIVOS
 # -----------------------------------------
 
-def crear_dispositivo(nombre_producto, categoria, vatios):
+def crear(nombre_producto, categoria, vatios):
     """
     Crea un nuevo dispositivo y lo retorna como objeto Dispositivo.
     """
@@ -151,7 +151,7 @@ def obtener_todos_dispositivos():
 
 
 def obtener_dispositivo_por_id(id):
-    dispositivo = Dispositivo.obtener_por_id(id)
+    dispositivo = obtener_dispositivo_por_id(id)
     if dispositivo:
         return dispositivo.to_dict()
     return None
@@ -168,14 +168,14 @@ def crear_dispositivo(nombre_producto, categoria, vatios):
     except ValueError:
         return {"error": "Los vatios deben ser un número entero"}, 400
     
-    dispositivo = Dispositivo.crear(nombre_producto, categoria, vatios)
+    dispositivo = crear(nombre_producto, categoria, vatios)
     if dispositivo:
         return dispositivo.to_dict(), 201
     return {"error": "Error al crear el dispositivo"}, 500
 
 
 def actualizar_dispositivo(id, nombre_producto, categoria, vatios):
-    dispositivo = Dispositivo.obtener_por_id(id)
+    dispositivo = obtener_dispositivo_por_id(id)
     if not dispositivo:
         return {"error": "Dispositivo no encontrado"}, 404
     
@@ -204,7 +204,7 @@ def calcular_consumo(dispositivos_ids):
     total_watts = 0
     
     for id in dispositivos_ids:
-        dispositivo = Dispositivo.obtener_por_id(id)
+        dispositivo = obtener_dispositivo_por_id(id)
         if dispositivo:
             total_watts += dispositivo.vatios
     

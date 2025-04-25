@@ -5,18 +5,26 @@ bp_admin = Blueprint('admin', __name__,  url_prefix='/admin')
 
 @bp_admin.route('/admin')
 def inicio_admin():
+
     return render_template('admin.html')
 
 @bp_admin.route('/api/dispositivos', methods=['POST'])
+
+
 def crear_dispositivo_route():
-    if not request.is_json:
-        return jsonify({"error": "Se espera un JSON válido"}), 400
 
-    datos = request.get_json()
-    nombre = datos.get('nombre_producto')
-    categoria = datos.get('categoria')
-    vatios = datos.get('vatios')
+    nombre = request.form.get('nombre_producto')
+    categoria = request.form.get('categoria_producto')
+    vatios = request.form.get('consumo_watts')
 
+    if not nombre or not categoria or not vatios:
+        return jsonify({"error": "Faltan datos requeridos: nombre_producto, categoria o vatios"}), 400
+
+    try:
+        vatios= float(vatios)
+    except ValueError:
+        return jsonify({"error": "El campo 'vatios' debe ser un número"}), 400
+    
     resultado, status = cd.crear_dispositivo(nombre, categoria, vatios)
     return jsonify(resultado), status
 
@@ -35,10 +43,16 @@ def actualizar_dispositivo_route(id):
     return jsonify(resultado), status
 
 
-@bp_admin.route('/api/dispositivos/<int:id>', methods=['DELETE'])
+@bp_admin.route('/api/dispositivos/<int:id>', methods=['POST','DELETE'])
 def eliminar_dispositivo_route(id):
-    resultado, status = cd.eliminar_dispositivo(id)
-    return jsonify(resultado), status
+    if request.method == 'POST':
+        # Interpretar que POST es una solicitud de eliminación desde formulario
+        resultado, status = cd.eliminar_dispositivo(id)
+        return jsonify(resultado), status
+    elif request.method == 'DELETE':
+        # Si de verdad viene DELETE, también lo atiendes
+        resultado, status = cd.eliminar_dispositivo(id)
+        return jsonify(resultado), status
 
 
 @bp_admin.route('/api/dispositivos', methods=['GET'])
