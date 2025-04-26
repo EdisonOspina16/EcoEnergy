@@ -28,7 +28,7 @@ def inicio():
         if usuario.get('es_admin'):
             return redirect(url_for('admin.inicio_admin'))
         else:
-            return render_template('inicio.html', usuario=usuario)
+            return render_template('inicio.html')
     else:
         return render_template('inicio.html')  # Página pública si no está logueado
     
@@ -115,3 +115,4 @@ def perfil():
     usuario = obtener_usuario_por_id(usuario_id) if usuario_id else None
 
     return render_template('perfil.html', usuario=usuario)
+

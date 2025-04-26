@@ -3,14 +3,14 @@ from controller import controladorDispositivos as cd
 
 bp_admin = Blueprint('admin', __name__,  url_prefix='/admin')
 
+
 @bp_admin.route('/admin')
 def inicio_admin():
 
     return render_template('admin.html')
 
+
 @bp_admin.route('/api/dispositivos', methods=['POST'])
-
-
 def crear_dispositivo_route():
 
     nombre = request.form.get('nombre_producto')
@@ -79,3 +79,8 @@ def calcular_consumo_route():
 
     resultado, status = cd.calcular_consumo(dispositivos_ids)
     return jsonify(resultado), status
+
+@bp_admin.route('/dispositivos', methods=['GET'])
+def mostrar_dispositivos():
+    productos_por_categoria = cd.obtener_dispositivos_por_categoria()
+    return render_template('inicio.html', products_by_category=productos_por_categoria)

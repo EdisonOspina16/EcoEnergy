@@ -13,7 +13,7 @@
         }
         
         .header {
-            background-color: #00695c ;
+            background-color: #00695c;
             color: white;
             padding: 15px 40px;
             display: flex;
@@ -159,102 +159,10 @@
         <a href="{{ url_for('vista_usuarios.login') }}" class="auth-links">Iniciar sesión / Registrarse</a>
     </div>
     <div class="main-content">
-        <h1 class="main-heading">CALCULA TUS GATOS</h1>
-        <p class="sub-heading">+EFICIENCIA -CONSUMO +DINERO</p>
+        <h1 class="main-heading">CALCULA TUS GASTOS</h1>
+        <p class="sub-heading">MENOS EMISIONES, MENOS CONSUMO, MÁS SOSTENIBILIDAD</p>
     </div>
-
-    <div class="container">
-        <h2 class="panel-title">INGRESA TUS ELECTRODOMESTICOS</h2>
-        
-        <div id="devices-container">
-            <div class="device-item">
-                <select class="device-selector">
-                    <option value="">Selecciona un producto</option>
-                    <option value="nevera-lg-2022" selected>Nevera LG 2022</option>
-                    <option value="nevera-samsung-2023">Nevera Samsung 2023</option>
-                    <option value="nevera-whirlpool-2021">Nevera Whirlpool 2021</option>
-                    <option value="nevera-mabe-2020">Nevera Mabe 2020</option>
-                </select>
-                <span class="arrow-icon">▼</span>
-                <button class="delete-btn" onclick="removeDevice(this)">🗑️</button>
-            </div>
-            
-            <div class="device-item">
-                <select class="device-selector">
-                    <option value="">Selecciona un producto</option>
-                    <option value="lavadora-lg-2016" selected>Lavadora LG 2016</option>
-                    <option value="lavadora-samsung-2022">Lavadora Samsung 2022</option>
-                    <option value="lavadora-whirlpool-2020">Lavadora Whirlpool 2020</option>
-                    <option value="lavadora-mabe-2019">Lavadora Mabe 2019</option>
-                </select>
-                <span class="arrow-icon">▼</span>
-                <button class="delete-btn" onclick="removeDevice(this)">🗑️</button>
-            </div>
-            
-            <div class="device-item">
-                <select class="device-selector">
-                    <option value="" selected>Selecciona un producto</option>
-                    <option value="tv-lg-2023">TV LG 2023</option>
-                    <option value="tv-samsung-2022">TV Samsung 2022</option>
-                    <option value="microondas-lg-2021">Microondas LG 2021</option>
-                    <option value="horno-whirlpool-2022">Horno Whirlpool 2022</option>
-                    <option value="licuadora-oster-2020">Licuadora Oster 2020</option>
-                </select>
-                <span class="arrow-icon">▼</span>
-                <button class="delete-btn" onclick="removeDevice(this)">🗑️</button>
-            </div>
-        </div>
-        
-        <button class="add-device-btn" onclick="addDevice()">+ Agregar electrodoméstico</button>
-        
-        <div class="results-section">
-            <h3 class="results-title">Resultados del cálculo:</h3>
-            <div class="results-placeholder">
-                Los resultados se mostrarán aquí después de seleccionar tus electrodomésticos
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function removeDevice(button) {
-            const deviceItem = button.parentNode;
-            deviceItem.remove();
-            updateCalculations();
-        }
-        
-        function addDevice() {
-            const devicesContainer = document.getElementById('devices-container');
-            const newDevice = document.createElement('div');
-            newDevice.className = 'device-item';
-            newDevice.innerHTML = `
-                <select class="device-selector" onchange="updateCalculations()">
-                    <option value="" selected>Selecciona un producto</option>
-                    <option value="nevera-lg-2022">Nevera LG 2022</option>
-                    <option value="nevera-samsung-2023">Nevera Samsung 2023</option>
-                    <option value="lavadora-lg-2016">Lavadora LG 2016</option>
-                    <option value="lavadora-samsung-2022">Lavadora Samsung 2022</option>
-                    <option value="tv-lg-2023">TV LG 2023</option>
-                    <option value="tv-samsung-2022">TV Samsung 2022</option>
-                    <option value="microondas-lg-2021">Microondas LG 2021</option>
-                    <option value="horno-whirlpool-2022">Horno Whirlpool 2022</option>
-                    <option value="licuadora-oster-2020">Licuadora Oster 2020</option>
-                </select>
-                <span class="arrow-icon">▼</span>
-                <button class="delete-btn" onclick="removeDevice(this)">🗑️</button>
-            `;
-            devicesContainer.appendChild(newDevice);
-        }
-        
-        function updateCalculations() {
-            // Aquí iría la lógica para actualizar los cálculos de consumo
-            // basado en los dispositivos seleccionados
-            console.log("Actualizando cálculos...");
-        }
-        
-        // Agregar event listeners a los selects existentes
-        document.querySelectorAll('.device-selector').forEach(select => {
-            select.addEventListener('change', updateCalculations);
-        });
-    </script>
 </body>
 </html>
+
+

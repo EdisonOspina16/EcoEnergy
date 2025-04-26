@@ -149,12 +149,12 @@ def eliminar_dispositivo(id):
 def obtener_todos_dispositivos():
     return [dispositivo.to_dict() for dispositivo in Dispositivo.obtener_todos()]
 
-
+"""
 def obtener_dispositivo_por_id(id):
-    dispositivo = obtener_dispositivo_por_id(id)
+    dispositivo = obtener_dispositivos(id)
     if dispositivo:
         return dispositivo.to_dict()
-    return None
+    return None"""
 
 
 def crear_dispositivo(nombre_producto, categoria, vatios):
@@ -194,10 +194,10 @@ def actualizar_dispositivo(id, nombre_producto, categoria, vatios):
         return dispositivo.to_dict(), 200
     return {"error": "Error al actualizar el dispositivo"}, 500
 
-def eliminar_dispositivo(id):
-    if Dispositivo.eliminar(id):
+"""def eliminar_dispositivo(id):
+    if eliminar_dispositivo(id):
         return {"mensaje": "Dispositivo eliminado correctamente"}, 200
-    return {"error": "Error al eliminar el dispositivo"}, 500
+    return {"error": "Error al eliminar el dispositivo"}, 500"""
 
 
 def calcular_consumo(dispositivos_ids):
@@ -225,10 +225,10 @@ def obtener_dispositivos_por_categoria():
     dispositivos = obtener_todos_dispositivos()
     productos_por_categoria = {}
 
-    for d in dispositivos:
-        categoria = d.get('categoria', 'Sin categoría')
+    for dispositivo in dispositivos:
+        categoria = dispositivo['categoria']
         if categoria not in productos_por_categoria:
             productos_por_categoria[categoria] = []
-        productos_por_categoria[categoria].append(d)
+        productos_por_categoria[categoria].append(dispositivo)
 
     return productos_por_categoria
