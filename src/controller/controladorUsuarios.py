@@ -209,10 +209,6 @@ def actualizar_contraseña(correo, nueva_contraseña):
         print(f"Error al actualizar contraseña: {e}")
         return False
 
-<<<<<<< HEAD
-
-
-
 
 #para mostrar los datos del usuario 
 def obtener_usuario_por_id (id_usuario):
@@ -239,24 +235,3 @@ def obtener_usuario_por_id (id_usuario):
         print(f"Error al obtener usuario por ID: {e}")
     return None
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# -----------------------------------------
-# FUNCIONES PARA EL HOME-ADMIN.
-# -----------------------------------------
-
-=======
->>>>>>> 67df6a085e60bbe0174c7a69998e32c64f1e486f
