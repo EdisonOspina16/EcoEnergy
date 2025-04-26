@@ -84,3 +84,4 @@ def calcular_consumo_route():
 def mostrar_dispositivos():
     productos_por_categoria = cd.obtener_dispositivos_por_categoria()
     return render_template('inicio.html', products_by_category=productos_por_categoria)
+

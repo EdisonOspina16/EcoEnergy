@@ -162,6 +162,66 @@
         <h1 class="main-heading">CALCULA TUS GASTOS</h1>
         <p class="sub-heading">MENOS EMISIONES, MENOS CONSUMO, MÁS SOSTENIBILIDAD</p>
     </div>
+    <div class="container">
+        <h2 class="panel-title">INGRESA TUS ELECTRODOMÉSTICOS</h2>
+        
+        <div id="devices-container">
+            {% for device in devices %}
+            <div class="device-item">
+                <select class="device-selector" id="product-select-{{ loop.index }}" name="device-{{ loop.index }}">
+                    <option value="">Selecciona un producto</option>
+                    {% for categoria, productos in products_by_category.items() %}
+                    <optgroup label="{{ categoria|capitalize }}s">
+                        {% for producto in productos %}
+                        <option value="{{ producto.id }}" {% if producto.id == device.product_id %}selected{% endif %}>
+                            {{ producto.nombre }} ({{ producto.watts }}W)
+                        </option>
+                        {% endfor %}
+                    </optgroup>
+                    {% endfor %}
+                </select>
+                <span class="arrow-icon">▼</span>
+                <button class="delete-btn" data-device-id="{{ device.id }}">🗑️</button>
+            </div>
+            {% endfor %}
+            
+            <!-- Si no hay dispositivos seleccionados, mostrar uno vacío -->
+            {% if not devices %}
+            <div class="device-item">
+                <select class="device-selector" id="product-select-1" name="device-1">
+                    <option value="" selected>Selecciona un producto</option>
+                    {% for categoria, productos in products_by_category.items() %}
+                    <optgroup label="{{ categoria|capitalize }}s">
+                        {% for producto in productos %}
+                        <option value="{{ producto.id }}">
+                            {{ producto.nombre }} ({{ producto.watts }}W)
+                        </option>
+                        {% endfor %}
+                    </optgroup>
+                    {% endfor %}
+                </select>
+                <span class="arrow-icon">▼</span>
+                <button class="delete-btn">🗑️</button>
+            </div>
+            {% endif %}
+        </div>
+
+        <button class="add-device-btn">Agregar dispositivo</button>
+
+        <div class="results-section">
+            <h3 class="results-title">Resultados del cálculo:</h3>
+            <div class="results-placeholder">
+                {% if total_watts %}
+                <p>Consumo total estimado: <strong>{{ consumo_total_watts }} Watts</strong></p>
+                <p>Consumo diario aproximado: <strong>{{ consumo_diario_kwh }} kWh</strong></p>
+                <p>Consumo mensual aproximado: <strong>{{ consumo_mensual_kwh }} kWh</strong></p>
+                {% else %}
+                Los resultados se mostrarán aquí después de seleccionar tus electrodomésticos
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
 </body>
 </html>
 
