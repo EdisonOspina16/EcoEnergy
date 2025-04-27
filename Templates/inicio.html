@@ -118,6 +118,12 @@
             cursor: pointer;
         }
         
+        .actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        }
+
         .add-device-btn {
             background-color:#00695c;
             color: white;
@@ -128,7 +134,26 @@
             margin-top: 20px;
             font-weight: bold;
         }
-        
+
+        .add-device-btn:hover {
+        background-color: #005544;
+        }
+
+        .calculate-btn {
+            background-color:#00695c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .calculate-btn:hover {
+        background-color: #005544;
+        }
+
         .results-section {
             margin-top: 40px;
             max-width: 800px;
@@ -148,6 +173,36 @@
             text-align: center;
             color: #666;
         }
+
+        .device-usage-input,
+        .device-time-unit {
+        background-color: #b5e1d9;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        padding: 15px;
+        font-size: 16px;
+        margin-right: 10px;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        cursor: pointer;
+        }
+
+        .device-time-unit {
+        width: 130px;
+        }
+
+        .device-usage-input {
+        width: 120px;
+        text-align: center;
+        }
+
+        .device-usage-input:focus,
+        .device-time-unit:focus {
+        outline: none;
+        border-color: #000;
+        }
+
     </style>
 </head>
 <body>
@@ -156,7 +211,15 @@
             ECOENERGY
             <span class="logo-icon">💡</span>
         </div>
-        <a href="{{ url_for('vista_usuarios.login') }}" class="auth-links">Iniciar sesión / Registrarse</a>
+        {% if not usuario %}
+        <a href="{{ url_for('vista_usuarios.login') }}" class="auth-links">
+        Iniciar sesión / Registrarse
+        </a>
+        {% else %}
+        <a href="{{ url_for('vista_usuarios.perfil') }}" class="auth-links">
+            Hola, {{ usuario.nombre }}
+        </a>
+        {% endif %}
     </div>
     <div class="main-content">
         <h1 class="main-heading">CALCULA TUS GASTOS</h1>
@@ -165,64 +228,120 @@
     <div class="container">
         <h2 class="panel-title">INGRESA TUS ELECTRODOMÉSTICOS</h2>
         
+        <template id="device-template">
+            <div class="device-item">
+              <select class="device-selector" name="device-template">
+                <option value="" selected>Selecciona un producto</option>
+                {% for categoria, productos in products_by_category.items() %}
+                <optgroup label="{{ categoria|capitalize }}s">
+                  {% for producto in productos %}
+                  <option value="{{ producto.id }}">
+                    {{ producto.nombre_producto }} ({{ producto.vatios }}W)
+                  </option>
+                  {% endfor %}
+                </optgroup>
+                {% endfor %}
+              </select>
+              <input type="number" class="device-usage-input" placeholder="Tiempo" min="0">
+              <select class="device-time-unit">
+                <option value="hours">Horas</option>
+                <option value="minutes">Minutos</option>
+              </select>
+              <span class="arrow-icon">▼</span>
+              <button class="delete-btn">🗑️</button>
+            </div>
+        </template>
+        
+        <!-- 2) Contenedor solo para los items renderizados -->
         <div id="devices-container">
-            {% for device in devices %}
-            <div class="device-item">
-                <select class="device-selector" id="product-select-{{ loop.index }}" name="device-{{ loop.index }}">
-                    <option value="">Selecciona un producto</option>
-                    {% for categoria, productos in products_by_category.items() %}
-                    <optgroup label="{{ categoria|capitalize }}s">
-                        {% for producto in productos %}
-                        <option value="{{ producto.id }}" {% if producto.id == device.product_id %}selected{% endif %}>
-                            {{ producto.nombre }} ({{ producto.watts }}W)
-                        </option>
-                        {% endfor %}
-                    </optgroup>
-                    {% endfor %}
-                </select>
-                <span class="arrow-icon">▼</span>
-                <button class="delete-btn" data-device-id="{{ device.id }}">🗑️</button>
-            </div>
-            {% endfor %}
-            
-            <!-- Si no hay dispositivos seleccionados, mostrar uno vacío -->
-            {% if not devices %}
-            <div class="device-item">
-                <select class="device-selector" id="product-select-1" name="device-1">
-                    <option value="" selected>Selecciona un producto</option>
-                    {% for categoria, productos in products_by_category.items() %}
-                    <optgroup label="{{ categoria|capitalize }}s">
-                        {% for producto in productos %}
-                        <option value="{{ producto.id }}">
-                            {{ producto.nombre }} ({{ producto.watts }}W)
-                        </option>
-                        {% endfor %}
-                    </optgroup>
-                    {% endfor %}
-                </select>
-                <span class="arrow-icon">▼</span>
-                <button class="delete-btn">🗑️</button>
-            </div>
-            {% endif %}
+        {% for device in devices %}
+            <div class="device-item">…</div>
+        {% endfor %}
         </div>
+        
+        <div class="actions">
+            <button type="button" class="add-device-btn">Agregar dispositivo</button>
+            <button type="button" id="calculate-btn" class="calculate-btn">Calcular</button>
+          </div>
 
-        <button class="add-device-btn">Agregar dispositivo</button>
-
-        <div class="results-section">
+          <div class="results-section">
             <h3 class="results-title">Resultados del cálculo:</h3>
-            <div class="results-placeholder">
-                {% if total_watts %}
-                <p>Consumo total estimado: <strong>{{ consumo_total_watts }} Watts</strong></p>
-                <p>Consumo diario aproximado: <strong>{{ consumo_diario_kwh }} kWh</strong></p>
-                <p>Consumo mensual aproximado: <strong>{{ consumo_mensual_kwh }} kWh</strong></p>
-                {% else %}
-                Los resultados se mostrarán aquí después de seleccionar tus electrodomésticos
-                {% endif %}
+            <div class="results-placeholder" id="results-placeholder">
+              <!-- Mensaje por defecto -->
+              <p id="no-results">Los resultados se mostrarán aquí después de seleccionar tus electrodomésticos</p>
+              <!-- Valores a actualizar -->
+              <div id="results-values" style="display: none;">
+                <p>Consumo total estimado: <strong><span id="res-total-watts">0</span> Watts</strong></p>
+                <p>Consumo diario aproximado: <strong><span id="res-daily-kwh">0</span> kWh</strong></p>
+                <p>Consumo mensual aproximado: <strong><span id="res-monthly-kwh">0</span> kWh</strong></p>
+              </div>
             </div>
-        </div>
+          </div>          
+
     </div>
     
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const btnAdd      = document.querySelector('.add-device-btn');
+    const btnCalc     = document.getElementById('calculate-btn');
+    const container   = document.getElementById('devices-container');
+    const tpl         = document.getElementById('device-template');
+
+    btnAdd.addEventListener('click', () => {
+        const clone = tpl.content.cloneNode(true);
+        const idx   = container.children.length + 1;
+        const sel   = clone.querySelector('.device-selector');
+        clone.querySelector('.device-usage-input').name = `usage-${idx}`;
+        clone.querySelector('.device-time-unit').name  = `unit-${idx}`;
+        sel.id    = `product-select-${idx}`;
+        sel.name  = `device-${idx}`;
+        container.appendChild(clone);
+    });  // agrega nuevos device-item 
+
+    btnCalc.addEventListener('click', () => {
+        const raw = Array.from(container.querySelectorAll('.device-item')).map(item => ({
+        id:    parseInt(item.querySelector('.device-selector').value, 10),
+        usage: parseFloat(item.querySelector('.device-usage-input').value),
+        unit:  item.querySelector('.device-time-unit').value
+        }));
+        const devices = raw.filter(d => !isNaN(d.id) && !isNaN(d.usage) && d.usage > 0);
+        if (devices.length === 0) {
+        alert('Selecciona al menos un dispositivo y un tiempo de uso válido');
+        return;
+        }
+        fetch('/api/dispositivos/consumo', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ devices })
+        })
+        .then(res => res.json())
+        .then(data => {
+            // 1) Ocultar mensaje por defecto
+            document.getElementById('no-results').style.display = 'none';     
+
+            // 2) Rellenar cada span con los valores devueltos
+            document.getElementById('res-total-watts').textContent  = data.consumo_total_watts;  
+            document.getElementById('res-daily-kwh').textContent    = data.consumo_diario_kwh;    
+            document.getElementById('res-monthly-kwh').textContent  = data.consumo_mensual_kwh;   
+
+            // 3) Mostrar el bloque de resultados
+            document.getElementById('results-values').style.display = 'block';           
+        })
+        .catch(err => {
+            console.error('Error al obtener consumo:', err);
+            alert('Ocurrió un error al calcular. Revisa la consola.');
+        });
+    });
+
+      // delegación para borrar
+    container.addEventListener('click', e => {
+        if (e.target.matches('.delete-btn'))
+          e.target.closest('.device-item').remove();  
+    });
+
+    });
+    
+    </script>
+
 </body>
 </html>
-
-

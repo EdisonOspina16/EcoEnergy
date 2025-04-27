@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, render_template
 from controller import controladorDispositivos as cd
 
-bp_admin = Blueprint('admin', __name__,  url_prefix='/admin')
+bp_admin = Blueprint('admin', __name__, template_folder= "Templates")
 
 
 @bp_admin.route('/admin')
@@ -71,17 +71,15 @@ def obtener_dispositivo_por_id_route(id):
 
 @bp_admin.route('/api/dispositivos/consumo', methods=['POST'])
 def calcular_consumo_route():
-    if not request.is_json:
-        return jsonify({"error": "Se espera un JSON válido"}), 400
+    data = request.get_json()  
+    if not data:
+        return jsonify({"error": "JSON inválido, se espera clave 'devices'"}), 400
 
-    datos = request.get_json()
-    dispositivos_ids = datos.get('ids', [])
-
-    resultado, status = cd.calcular_consumo(dispositivos_ids)
+    dispositivos = data['devices']
+    resultado, status = cd.calcular_consumo(dispositivos)
     return jsonify(resultado), status
 
 @bp_admin.route('/dispositivos', methods=['GET'])
 def mostrar_dispositivos():
     productos_por_categoria = cd.obtener_dispositivos_por_categoria()
     return render_template('inicio.html', products_by_category=productos_por_categoria)
-

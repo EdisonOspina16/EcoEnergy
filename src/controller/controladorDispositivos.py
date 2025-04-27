@@ -146,8 +146,6 @@ def eliminar_dispositivo(id):
 # FUNCIONES DEL ADMIN
 # -----------------------------------------
 
-def obtener_todos_dispositivos():
-    return [dispositivo.to_dict() for dispositivo in Dispositivo.obtener_todos()]
 
 """
 def obtener_dispositivo_por_id(id):
@@ -200,35 +198,49 @@ def actualizar_dispositivo(id, nombre_producto, categoria, vatios):
     return {"error": "Error al eliminar el dispositivo"}, 500"""
 
 
-def calcular_consumo(dispositivos_ids):
+def calcular_consumo(dispositivos):
+    consumo_diario_kwh = 0.0
     total_watts = 0
-    
-    for id in dispositivos_ids:
-        dispositivo = obtener_dispositivo_por_id(id)
-        if dispositivo:
-            total_watts += dispositivo.vatios
-    
-    if total_watts > 0:
-        consumo_diario_kwh = (total_watts * 24) / 1000
-        consumo_mensual_kwh = consumo_diario_kwh * 30
-        
-        return {
-            "consumo_total_watts": total_watts,
-            "consumo_diario_kwh": round(consumo_diario_kwh, 2),
-            "consumo_mensual_kwh": round(consumo_mensual_kwh, 2)
-        }, 200
-    
-    return {"error": "No se han seleccionado dispositivos válidos"}, 400
+
+    for item in dispositivos:
+        id_disp   = item.get('id')
+        uso       = item.get('usage')
+        unidad    = item.get('unit')
+
+        disp = obtener_dispositivo_por_id(id_disp)
+        if not disp:
+            continue
+
+        vatios = disp.vatios
+        total_watts += vatios
+
+        # 1) convertir W a kW
+        potencia_kw = vatios / 1000.0  # 1 kW = 1000 W 
+
+        # 2) convertir minutos → horas
+        horas_uso = uso / 60.0 if unidad == 'minutes' else uso
+
+        # 3) kWh de este dispositivo por día
+        consumo_diario_kwh += potencia_kw * horas_uso  # kW × h = kWh 
+
+    if total_watts == 0 or consumo_diario_kwh == 0:
+        return {"error": "No hay dispositivos o datos de uso válidos"}, 400
+
+    consumo_mensual_kwh = round(consumo_diario_kwh * 30, 2)  # 30 días  
+    return {
+        "consumo_total_watts": total_watts,
+        "consumo_diario_kwh": round(consumo_diario_kwh, 2),
+        "consumo_mensual_kwh": consumo_mensual_kwh
+    }, 200
 
 
 def obtener_dispositivos_por_categoria():
-    dispositivos = obtener_todos_dispositivos()
+    dispositivos = obtener_dispositivos()
     productos_por_categoria = {}
 
     for dispositivo in dispositivos:
-        categoria = dispositivo['categoria']
+        categoria = dispositivo.categoria
         if categoria not in productos_por_categoria:
             productos_por_categoria[categoria] = []
         productos_por_categoria[categoria].append(dispositivo)
-
     return productos_por_categoria

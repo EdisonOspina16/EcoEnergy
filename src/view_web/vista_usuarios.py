@@ -13,7 +13,7 @@ blueprint = Blueprint('vista_usuarios', __name__, template_folder= "Templates")
 def login_requerido(f):
     @wraps(f)
     def decorador(*args, **kwargs):
-        if 'usuario_id' not in session:
+        if not session.get('usuario'):               
             flash("Debes iniciar sesión para acceder a esta página", "warning")
             return redirect(url_for('vista_usuarios.login'))
         return f(*args, **kwargs)
@@ -23,14 +23,15 @@ def login_requerido(f):
 @blueprint.route('/')
 def inicio():
     usuario = session.get('usuario')
-    
+    productos_por_categoria = cd.obtener_dispositivos_por_categoria()
+
     if usuario:
         if usuario.get('es_admin'):
             return redirect(url_for('admin.inicio_admin'))
         else:
-            return render_template('inicio.html')
+            return render_template('inicio.html', products_by_category=productos_por_categoria, devices=[], usuario=usuario)
     else:
-        return render_template('inicio.html')  # Página pública si no está logueado
+        return render_template('inicio.html', products_by_category=productos_por_categoria, devices=[])
     
 
 # Ruta para mostrar el formulario de registro
@@ -102,17 +103,11 @@ def recuperar():
 # FUNCIONES BLUEPRINTS PARA VISTA USUARIOS.     
 # -----------------------------------------
 
-@blueprint.route('/api/dispositivos', methods=['GET'])
-def obtener_dispositivos():
-    dispositivos = cd.obtener_todos_dispositivos()
-    return jsonify(dispositivos)
-
 #perfil-------------------------
 @blueprint.route('/perfil')
 @login_requerido
 def perfil():
-    usuario_id = session.get('usuario_id')
-    usuario = obtener_usuario_por_id(usuario_id) if usuario_id else None
-
+    usuario= session.get('usuario')
+    print(usuario)
     return render_template('perfil.html', usuario=usuario)
 
