@@ -6,16 +6,16 @@ bp_admin = Blueprint('admin', __name__, template_folder= "Templates")
 
 @bp_admin.route('/admin')
 def inicio_admin():
-
-    return render_template('admin.html')
+    productos = cd.obtener_dispositivos()
+    return render_template('admin.html', productos = productos)
 
 
 @bp_admin.route('/api/dispositivos', methods=['POST'])
 def crear_dispositivo_route():
 
     nombre = request.form.get('nombre_producto')
-    categoria = request.form.get('categoria_producto')
-    vatios = request.form.get('consumo_watts')
+    categoria = request.form.get('categoria')
+    vatios = request.form.get('vatios')
 
     if not nombre or not categoria or not vatios:
         return jsonify({"error": "Faltan datos requeridos: nombre_producto, categoria o vatios"}), 400
@@ -45,19 +45,13 @@ def actualizar_dispositivo_route(id):
 
 @bp_admin.route('/api/dispositivos/<int:id>', methods=['POST','DELETE'])
 def eliminar_dispositivo_route(id):
-    if request.method == 'POST':
-        # Interpretar que POST es una solicitud de eliminación desde formulario
-        resultado, status = cd.eliminar_dispositivo(id)
-        return jsonify(resultado), status
-    elif request.method == 'DELETE':
-        # Si de verdad viene DELETE, también lo atiendes
-        resultado, status = cd.eliminar_dispositivo(id)
-        return jsonify(resultado), status
+    resultado, status = cd.eliminar_dispositivo(id)
+    return jsonify(resultado), status
 
 
 @bp_admin.route('/api/dispositivos', methods=['GET'])
 def obtener_dispositivos_route():
-    dispositivos = cd.obtener_todos_dispositivos()
+    dispositivos = cd.obtener_dispositivos()
     return jsonify(dispositivos), 200
 
 

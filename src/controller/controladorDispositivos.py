@@ -135,24 +135,22 @@ def eliminar_dispositivo(id):
         cur.execute("DELETE FROM dispositivo WHERE id = %s", (id,))
         conn.commit()
 
+        if cur.rowcount == 0:
+            cur.close()
+            conn.close()
+            return {'mensaje': 'Dispositivo no encontrado'}, 404
+        
         cur.close()
         conn.close()
-        return True
+        return {'mensaje': 'Dispositivo eliminado exitosamente'}, 200
+    
     except Exception as e:
         print(f"Error al eliminar dispositivo: {e}")
-        return False
+        return {'mensaje': 'Error al eliminar dispositivo'}, 500
 
 # -----------------------------------------
 # FUNCIONES DEL ADMIN
 # -----------------------------------------
-
-
-"""
-def obtener_dispositivo_por_id(id):
-    dispositivo = obtener_dispositivos(id)
-    if dispositivo:
-        return dispositivo.to_dict()
-    return None"""
 
 
 def crear_dispositivo(nombre_producto, categoria, vatios):
@@ -244,3 +242,4 @@ def obtener_dispositivos_por_categoria():
             productos_por_categoria[categoria] = []
         productos_por_categoria[categoria].append(dispositivo)
     return productos_por_categoria
+
