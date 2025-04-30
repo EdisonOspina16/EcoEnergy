@@ -2,18 +2,297 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Contraseña - EcoEnergy</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f9f8, #e0f2f1);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #00796b, #004d40);
+            color: white;
+            padding: 15px 40px;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 450px;
+            padding: 40px 30px;
+            text-align: center;
+            margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #00796b, #00695c);
+        }
+        
+        .icono {
+            position: relative;
+            font-size: 36px;
+            margin-left: 10px;
+            width: 80px;
+            height: 80px;
+            background: #e0f2f1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s infinite ease-in-out;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        h1 {
+            color: #00695c;
+            font-size: 26px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        input {
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #00695c;
+            box-shadow: 0 0 0 2px rgba(0, 105, 92, 0.2);
+        }
+        
+        input::placeholder {
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #00796b, #00695c);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #00897b, #00796b);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        a {
+            display: block;
+            color: #00695c;
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        a:hover {
+            color: #004d40;
+            text-decoration: underline;
+        }
+        
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .decoration {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0, 105, 92, 0.1), rgba(0, 105, 92, 0.05));
+            z-index: -1;
+        }
+        
+        .decoration-1 {
+            top: -100px;
+            right: -100px;
+        }
+        
+        .decoration-2 {
+            bottom: -100px;
+            left: -100px;
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #00695c;
+        }
+        
+        .icon-input {
+            padding-left: 45px;
+        }
+        
+        .info-box {
+            background-color: #e0f2f1;
+            border-left: 4px solid #00796b;
+            padding: 15px;
+            text-align: left;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .info-box p {
+            margin: 0;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 30px 20px;
+            }
+            
+            header {
+                padding: 15px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>ECOENERGY</header>
+    <header>
+        ECOENERGY
+        <span style="color: #FFD700; margin-left: 10px;">
+            <i class="fas fa-lightbulb"></i>
+        </span>
+    </header>
+    
     <div class="container">
-        <h1>¿Has olvidado la contraseña?</h1>
+        <div class="decoration decoration-1"></div>
+        <div class="decoration decoration-2"></div>
+        
+        <div class="icono">
+            <i class="fas fa-key" style="color: #00796b; font-size: 38px;"></i>
+        </div>
+        
+        <h1>RECUPERAR CONTRASEÑA</h1>
+        <p>Recupera el acceso a tu cuenta para continuar ahorrando energía</p>
+        
+        <div class="info-box">
+            <p><i class="fas fa-info-circle" style="margin-right: 5px;"></i> Ingresa tu correo electrónico y establece una nueva contraseña para tu cuenta.</p>
+        </div>
+        
         <form method="POST" action="{{ url_for('vista_usuarios.recuperar') }}">
-            <input type="email" name="correo" placeholder="TU@CORREO.COM" required>
-            <input type="password" name="nueva_contraseña" placeholder="Nueva contraseña" required>
-            <button type="submit">Recuperar</button>
+            <div class="input-group">
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" name="correo" class="icon-input" placeholder="Tu correo electrónico" required>
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-lock input-icon"></i>
+                <input type="password" name="nueva_contraseña" class="icon-input" placeholder="Nueva contraseña" required>
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-lock input-icon"></i>
+                <input type="password" name="confirmar_contraseña" class="icon-input" placeholder="Confirmar nueva contraseña" required>
+            </div>
+            
+            <button type="submit">
+                <i class="fas fa-sync-alt" style="margin-right: 8px;"></i>
+                RESTABLECER CONTRASEÑA
+            </button>
         </form>
+        
+        <div class="links-container">
+            <a href="{{ url_for('vista_usuarios.login') }}">
+                <i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i>
+                Volver a inicio de sesión
+            </a>
+        </div>
     </div>
+
+    <script>
+        // Efecto de animación para la página de recuperación
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            form.style.opacity = '0';
+            form.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                form.style.transition = 'all 0.5s ease';
+                form.style.opacity = '1';
+                form.style.transform = 'translateY(0)';
+            }, 200);
+        });
+    </script>
 </body>
 </html>
