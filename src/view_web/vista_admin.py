@@ -1,10 +1,23 @@
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template, session, redirect, flash, url_for
+from functools import wraps
 from controller import controladorDispositivos as cd
+
+from SecretConfig import GEMINI_PROMPT
 
 bp_admin = Blueprint('admin', __name__, template_folder= "Templates")
 
+# para que no lo deje ver el perfil si el usario no esta iniciado 
+def login_requerido(f):
+    @wraps(f)
+    def decorador(*args, **kwargs):
+        if not session.get('usuario'):               
+            flash("Debes iniciar sesión para acceder a esta página", "warning")
+            return redirect(url_for('vista_usuarios.login'))
+        return f(*args, **kwargs)
+    return decorador
 
 @bp_admin.route('/admin')
+@login_requerido
 def inicio_admin():
     productos = cd.obtener_dispositivos()
     return render_template('admin.html', productos = productos)
@@ -77,3 +90,16 @@ def calcular_consumo_route():
 def mostrar_dispositivos():
     productos_por_categoria = cd.obtener_dispositivos_por_categoria()
     return render_template('inicio.html', products_by_category=productos_por_categoria)
+
+@bp_admin.route('/clasificar_texto', methods=['POST'])
+def clasificar_texto_route():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "JSON inválido, se espera clave 'text'"}), 400
+
+    texto = data['text'] + ' ' + GEMINI_PROMPT
+    try:
+        resultado = cd.clasificar_texto(texto)
+        return jsonify(resultado), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

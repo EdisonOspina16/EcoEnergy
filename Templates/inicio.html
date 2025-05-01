@@ -64,6 +64,8 @@
         }
         
         .container {
+            display: flex;
+            gap: 30px;
             padding: 20px 40px;
             min-height: 500px;
         }
@@ -203,6 +205,45 @@
         border-color: #000;
         }
 
+        .left-panel {
+            flex: 1;
+            max-width: 800px;
+        }
+
+        .right-panel {
+            width: 300px;
+            background-color: #f5f5f5;
+            padding: 25px;
+            border-radius: 10px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .right-panel h3 {
+            color: #00695c;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .right-panel p {
+            line-height: 1.6;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .energy-tip {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #ddd;
+        }
+
+        .energy-tip h4 {
+            color: #00695c;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -226,57 +267,69 @@
         <p class="sub-heading">MENOS EMISIONES, MENOS CONSUMO, MÁS SOSTENIBILIDAD</p>
     </div>
     <div class="container">
-        <h2 class="panel-title">INGRESA TUS ELECTRODOMÉSTICOS</h2>
-        
-        <template id="device-template">
-            <div class="device-item">
-              <select class="device-selector" name="device-template">
-                <option value="" selected>Selecciona un producto</option>
-                {% for categoria, productos in products_by_category.items() %}
-                <optgroup label="{{ categoria|capitalize }}s">
-                  {% for producto in productos %}
-                  <option value="{{ producto.id }}">
-                    {{ producto.nombre_producto }} ({{ producto.vatios }}W)
-                  </option>
-                  {% endfor %}
-                </optgroup>
-                {% endfor %}
-              </select>
-              <input type="number" class="device-usage-input" placeholder="Tiempo" min="0">
-              <select class="device-time-unit">
-                <option value="hours">Horas</option>
-                <option value="minutes">Minutos</option>
-              </select>
-              <span class="arrow-icon">▼</span>
-              <button class="delete-btn">🗑️</button>
+        <div class="left-panel">
+            <h2 class="panel-title">INGRESA TUS ELECTRODOMÉSTICOS</h2>
+            
+            <template id="device-template">
+                <div class="device-item">
+                <select class="device-selector" name="device-template">
+                    <option value="" selected>Selecciona un producto</option>
+                    {% for categoria, productos in products_by_category.items() %}
+                    <optgroup label="{{ categoria|capitalize }}s">
+                    {% for producto in productos %}
+                    <option value="{{ producto.id }}">
+                        {{ producto.nombre_producto }} ({{ producto.vatios }}W)
+                    </option>
+                    {% endfor %}
+                    </optgroup>
+                    {% endfor %}
+                </select>
+                <input type="number" class="device-usage-input" placeholder="Tiempo" min="0">
+                <select class="device-time-unit">
+                    <option value="hours">Horas</option>
+                    <option value="minutes">Minutos</option>
+                </select>
+                <span class="arrow-icon">▼</span>
+                <button class="delete-btn">🗑️</button>
+                </div>
+            </template>
+            
+            <!-- 2) Contenedor solo para los items renderizados -->
+            <div id="devices-container">
+            {% for device in devices %}
+                <div class="device-item">…</div>
+            {% endfor %}
             </div>
-        </template>
-        
-        <!-- 2) Contenedor solo para los items renderizados -->
-        <div id="devices-container">
-        {% for device in devices %}
-            <div class="device-item">…</div>
-        {% endfor %}
-        </div>
-        
-        <div class="actions">
-            <button type="button" class="add-device-btn">Agregar dispositivo</button>
-            <button type="button" id="calculate-btn" class="calculate-btn">Calcular</button>
-          </div>
+            
+            <div class="actions">
+                <button type="button" class="add-device-btn">Agregar dispositivo</button>
+                <button type="button" id="calculate-btn" class="calculate-btn">Calcular</button>
+            </div>
 
-          <div class="results-section">
-            <h3 class="results-title">Resultados del cálculo:</h3>
-            <div class="results-placeholder" id="results-placeholder">
-              <!-- Mensaje por defecto -->
-              <p id="no-results">Los resultados se mostrarán aquí después de seleccionar tus electrodomésticos</p>
-              <!-- Valores a actualizar -->
-              <div id="results-values" style="display: none;">
-                <p>Consumo total estimado: <strong><span id="res-total-watts">0</span> Watts</strong></p>
-                <p>Consumo diario aproximado: <strong><span id="res-daily-kwh">0</span> kWh</strong></p>
-                <p>Consumo mensual aproximado: <strong><span id="res-monthly-kwh">0</span> kWh</strong></p>
-              </div>
+            <div class="results-section">
+                <h3 class="results-title">Resultados del cálculo:</h3>
+                <div class="results-placeholder" id="results-placeholder">
+                <!-- Mensaje por defecto -->
+                <p id="no-results">Los resultados se mostrarán aquí después de seleccionar tus electrodomésticos</p>
+                <!-- Valores a actualizar -->
+                <div id="results-values" style="display: none;">
+                    <p>Consumo total estimado: <strong><span id="res-total-watts">0</span> Watts</strong></p>
+                    <p>Consumo diario aproximado: <strong><span id="res-daily-kwh">0</span> kWh</strong></p>
+                    <p>Consumo mensual aproximado: <strong><span id="res-monthly-kwh">0</span> kWh</strong></p>
+                </div>
+                </div>
+            </div>          
+        </div>
+
+        <div class="right-panel">
+            <h3>💡 Consejos de Ahorro</h3>
+            <p></p>
+            
+            <div class="energy-tip">
+                <h4>¿Sabías que?</h4>
+                <p>Un hogar promedio puede ahorrar hasta 30% de energía con simples cambios de hábitos.</p>
             </div>
-          </div>          
+        </div>
 
     </div>
     
@@ -306,6 +359,7 @@
         }));
         const devices = raw.filter(d => !isNaN(d.id) && !isNaN(d.usage) && d.usage > 0);
         if (devices.length === 0) {
+        document.getElementById('no-results').style.display = 'none';  
         alert('Selecciona al menos un dispositivo y un tiempo de uso válido');
         return;
         }
@@ -326,10 +380,31 @@
 
             // 3) Mostrar el bloque de resultados
             document.getElementById('results-values').style.display = 'block';           
+
+            // 4) Preparar el prompt para Gemini
+            const partialPrompt = 
+            `El usuario escogio los siguientes dispositivos: ${JSON.stringify(data.dispositivos_datos)}; ` +
+            `estos dispositivos representan un total de: ${data.consumo_total_watts} Watts; ` +
+            `el consumo diario de estos dispositivos en kwh es: ${data.consumo_diario_kwh}; ` +
+            `el consumo mensual de estos dispositivos en kwh es: ${data.consumo_mensual_kwh}.`;
+            console.log(partialPrompt)
+            // 5) Llamada al endpoint de Gemini
+            return fetch('/clasificar_texto', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ text: partialPrompt })
+            });
+        })
+        .then(res => res.json())
+        .then(geminiResp => {
+            const ahorroParafo = document.querySelector('.right-panel > p');
+            if (ahorroParafo) {
+                ahorroParafo.innerHTML = geminiResp.response;
+            }
         })
         .catch(err => {
-            console.error('Error al obtener consumo:', err);
-            alert('Ocurrió un error al calcular. Revisa la consola.');
+            console.error('Error en el flujo de cálculo o el LLM:', err);
+            alert('Ocurrio un error.');
         });
     });
 

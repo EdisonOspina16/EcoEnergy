@@ -1,10 +1,13 @@
 import sys
 sys.path.append("src")
 
+import json
 import psycopg2
 from psycopg2.extras import RealDictCursor
+from google import genai
+
 from model.dispositivo import Dispositivo
-from SecretConfig import PGHOST, PGDATABASE, PGUSER, PGPASSWORD
+from SecretConfig import PGHOST, PGDATABASE, PGUSER, PGPASSWORD, GEMINI_API_KEY, GEMINI_PROMPT, GEMINI_MODEL
 
 def obtener_conexion():
     try:
@@ -199,6 +202,7 @@ def actualizar_dispositivo(id, nombre_producto, categoria, vatios):
 def calcular_consumo(dispositivos):
     consumo_diario_kwh = 0.0
     total_watts = 0
+    dispositivos_datos = []
 
     for item in dispositivos:
         id_disp   = item.get('id')
@@ -208,6 +212,13 @@ def calcular_consumo(dispositivos):
         disp = obtener_dispositivo_por_id(id_disp)
         if not disp:
             continue
+        dispositivos_datos.append({
+            "id": disp.id,
+            "nombre_producto": disp.nombre_producto,
+            "categoria": disp.categoria,
+            "vatios": disp.vatios,
+            "fecha_creacion": disp.fecha_creacion.isoformat()
+        })
 
         vatios = disp.vatios
         total_watts += vatios
@@ -228,7 +239,8 @@ def calcular_consumo(dispositivos):
     return {
         "consumo_total_watts": total_watts,
         "consumo_diario_kwh": round(consumo_diario_kwh, 2),
-        "consumo_mensual_kwh": consumo_mensual_kwh
+        "consumo_mensual_kwh": consumo_mensual_kwh,
+        "dispositivos_datos": dispositivos_datos
     }, 200
 
 
@@ -243,3 +255,12 @@ def obtener_dispositivos_por_categoria():
         productos_por_categoria[categoria].append(dispositivo)
     return productos_por_categoria
 
+def clasificar_texto(texto):
+    client = genai.Client(api_key = GEMINI_API_KEY)  
+  
+    response = client.models.generate_content(
+        model=GEMINI_MODEL,
+        contents=[texto]
+    )
+
+    return {"response": response.text}
