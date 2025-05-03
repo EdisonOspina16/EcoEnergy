@@ -4,77 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ECOENERGY - Calcula tus gastos</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f9f8, #e0f2f1);
+            min-height: 100vh;
+            color: #333;
         }
         
         .header {
-            background-color: #00695c;
+            background: linear-gradient(135deg, #00796b, #004d40);
             color: white;
-            padding: 15px 40px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
         .logo {
             display: flex;
             align-items: center;
-            font-size: 24px;
+            gap: 10px;
+            font-size: 1.5rem;
             font-weight: bold;
+            letter-spacing: 1px;
         }
         
-        .logo-icon {
+        .lightbulb {
             color: #FFD700;
-            font-size: 28px;
-            margin-left: 10px;
+            font-size: 1.5rem;
         }
         
         .auth-links {
+            background-color: rgba(255, 255, 255, 0.1);
             color: white;
             text-decoration: none;
             font-weight: 500;
             padding: 8px 16px;
-            border: 1px solid white;
-            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .auth-links:hover {
             background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
-        
-        .main-content {
-            padding: 30px 0;
+
+        .page-title {
+            padding: 20px;
+            background-color: white;
+            border-bottom: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
             text-align: center;
-            border-bottom: 1px solid #e0e0e0;
         }
         
-        .main-heading {
-            font-size: 28px;
+        .page-title h1 {
+            font-size: 1.5rem;
             font-weight: bold;
+            text-transform: uppercase;
+            color: #00695c;
             margin-bottom: 5px;
         }
         
         .sub-heading {
-            font-size: 16px;
+            font-size: 1rem;
+            color: #666;
         }
         
         .container {
             display: flex;
             gap: 30px;
-            padding: 20px 40px;
-            min-height: 500px;
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
         .panel-title {
-            font-size: 20px;
+            font-size: 1.2rem;
             font-weight: bold;
             margin-bottom: 20px;
-            text-align: left;
+            color: #00695c;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-icon {
+            font-size: 1.2rem;
+            color: #00695c;
         }
         
         .device-item {
@@ -82,341 +112,538 @@
             margin-bottom: 15px;
             align-items: center;
             position: relative;
-            max-width: 800px;
+            gap: 10px;
+        }
+        
+        .device-selector, 
+        .device-usage-input, 
+        .device-time-unit {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: white;
         }
         
         .device-selector {
             flex-grow: 1;
-            background-color: #b5e1d9;
-            padding: 15px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
             cursor: pointer;
-            text-align: left;
-            margin-right: 10px;
             position: relative;
             appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
         
-        .device-selector::-ms-expand {
-            display: none;
+        .device-selector:focus, 
+        .device-usage-input:focus, 
+        .device-time-unit:focus {
+            outline: none;
+            border-color: #00695c;
+            box-shadow: 0 0 0 2px rgba(0, 105, 92, 0.2);
         }
         
         .arrow-icon {
             position: absolute;
-            right: 50px;
+            right: 15px;
             top: 50%;
             transform: translateY(-50%);
             pointer-events: none;
+            color: #00695c;
         }
         
         .delete-btn {
             background: none;
             border: none;
-            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
+            color: #e74c3c;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            background-color: #fff1f0;
         }
         
+        .delete-btn:hover {
+            background-color: #ffdddd;
+            transform: scale(1.05);
+        }
+
+        .device-usage-input {
+            width: 120px;
+            text-align: center;
+        }
+
+        .device-time-unit {
+            width: 130px;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            position: relative;
+            text-align: center;
+        }
+
         .actions {
-        display: flex;
-        gap: 10px;
-        margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .action-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .add-device-btn {
-            background-color:#00695c;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-            font-weight: bold;
+            background-color: white;
+            color: #00695c;
+            border: 1px solid #00695c;
         }
 
         .add-device-btn:hover {
-        background-color: #005544;
+            background-color: #f0f9f7;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
         }
 
         .calculate-btn {
-            background-color:#00695c;
+            background: linear-gradient(135deg, #00796b, #00695c);
             color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-            font-weight: bold;
         }
 
         .calculate-btn:hover {
-        background-color: #005544;
+            background: linear-gradient(135deg, #00897b, #00796b);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
 
         .results-section {
             margin-top: 40px;
-            max-width: 800px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
         
         .results-title {
-            font-size: 18px;
+            font-size: 1.2rem;
             font-weight: bold;
-            margin-bottom: 15px;
-            color:#00695c;
+            margin-bottom: 20px;
+            color: #00695c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .results-placeholder {
-            background-color: #f5f5f5;
-            padding: 20px;
-            border-radius: 5px;
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 10px;
             text-align: center;
+            color: #666;
+            border: 1px dashed #ddd;
+        }
+
+        #results-values {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .result-card {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-icon {
+            font-size: 2rem;
+            color: #00695c;
+            margin-bottom: 10px;
+        }
+
+        .result-label {
+            font-size: 0.9rem;
             color: #666;
         }
 
-        .device-usage-input,
-        .device-time-unit {
-        background-color: #b5e1d9;
-        border: 1px solid transparent;
-        border-radius: 5px;
-        padding: 15px;
-        font-size: 16px;
-        margin-right: 10px;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        cursor: pointer;
-        }
-
-        .device-time-unit {
-        width: 130px;
-        }
-
-        .device-usage-input {
-        width: 120px;
-        text-align: center;
-        }
-
-        .device-usage-input:focus,
-        .device-time-unit:focus {
-        outline: none;
-        border-color: #000;
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00695c;
         }
 
         .left-panel {
             flex: 1;
-            max-width: 800px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
 
         .right-panel {
             width: 300px;
-            background-color: #f5f5f5;
-            padding: 25px;
-            border-radius: 10px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             height: fit-content;
             position: sticky;
-            top: 20px;
+            top: 30px;
         }
 
         .right-panel h3 {
             color: #00695c;
-            margin-bottom: 15px;
-            font-size: 18px;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .right-panel p {
             line-height: 1.6;
             color: #666;
-            font-size: 14px;
+            margin-bottom: 20px;
         }
 
         .energy-tip {
             margin-top: 25px;
             padding-top: 25px;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid #eee;
         }
 
         .energy-tip h4 {
             color: #00695c;
-            font-size: 16px;
-            margin-bottom: 10px;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
+        .tip-content {
+            background-color: #f0f9f7;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #00695c;
+        }
+
+        .select-wrapper {
+            position: relative;
+            flex-grow: 1;
+        }
+
+        .time-wrapper {
+            position: relative;
+            width: 130px;
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .right-panel {
+                width: 100%;
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .device-item {
+                flex-wrap: wrap;
+            }
+            
+            .device-selector {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .device-usage-input, 
+            .device-time-unit {
+                flex-grow: 1;
+            }
+            
+            .delete-btn {
+                position: absolute;
+                right: 0;
+                top: 12px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="logo">
             ECOENERGY
-            <span class="logo-icon">💡</span>
+            <span class="lightbulb">
+                <i class="fas fa-lightbulb"></i>
+            </span>
         </div>
         {% if not usuario %}
         <a href="{{ url_for('vista_usuarios.login') }}" class="auth-links">
-        Iniciar sesión / Registrarse
+            <i class="fas fa-user"></i>
+            Iniciar sesión / Registrarse
         </a>
         {% else %}
         <a href="{{ url_for('vista_usuarios.perfil') }}" class="auth-links">
+            <i class="fas fa-user-circle"></i>
             Hola, {{ usuario.nombre }}
         </a>
         {% endif %}
     </div>
-    <div class="main-content">
-        <h1 class="main-heading">CALCULA TUS GASTOS</h1>
+    
+    <div class="page-title">
+        <h1>Calcula tus gastos energéticos</h1>
         <p class="sub-heading">MENOS EMISIONES, MENOS CONSUMO, MÁS SOSTENIBILIDAD</p>
     </div>
+    
     <div class="container">
         <div class="left-panel">
-            <h2 class="panel-title">INGRESA TUS ELECTRODOMÉSTICOS</h2>
+            <h2 class="panel-title">
+                <i class="fas fa-plug panel-icon"></i>
+                Ingresa tus electrodomésticos
+            </h2>
             
             <template id="device-template">
                 <div class="device-item">
-                <select class="device-selector" name="device-template">
-                    <option value="" selected>Selecciona un producto</option>
-                    {% for categoria, productos in products_by_category.items() %}
-                    <optgroup label="{{ categoria|capitalize }}s">
-                    {% for producto in productos %}
-                    <option value="{{ producto.id }}">
-                        {{ producto.nombre_producto }} ({{ producto.vatios }}W)
-                    </option>
-                    {% endfor %}
-                    </optgroup>
-                    {% endfor %}
-                </select>
-                <input type="number" class="device-usage-input" placeholder="Tiempo" min="0">
-                <select class="device-time-unit">
-                    <option value="hours">Horas</option>
-                    <option value="minutes">Minutos</option>
-                </select>
-                <span class="arrow-icon">▼</span>
-                <button class="delete-btn">🗑️</button>
+                    <div class="select-wrapper">
+                        <select class="device-selector" name="device-template">
+                            <option value="" selected>Selecciona un producto</option>
+                            {% for categoria, productos in products_by_category.items() %}
+                            <optgroup label="{{ categoria|capitalize }}s">
+                            {% for producto in productos %}
+                            <option value="{{ producto.id }}">
+                                {{ producto.nombre_producto }} ({{ producto.vatios }}W)
+                            </option>
+                            {% endfor %}
+                            </optgroup>
+                            {% endfor %}
+                        </select>
+                        <i class="fas fa-chevron-down arrow-icon"></i>
+                    </div>
+                    <input type="number" class="device-usage-input" placeholder="Tiempo" min="0">
+                    <div class="time-wrapper">
+                        <select class="device-time-unit">
+                            <option value="hours">Horas</option>
+                            <option value="minutes">Minutos</option>
+                        </select>
+                        <i class="fas fa-chevron-down arrow-icon"></i>
+                    </div>
+                    <button class="delete-btn">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
                 </div>
             </template>
             
-            <!-- 2) Contenedor solo para los items renderizados -->
             <div id="devices-container">
-            {% for device in devices %}
-                <div class="device-item">…</div>
-            {% endfor %}
+                {% for device in devices %}
+                    <div class="device-item">…</div>
+                {% endfor %}
             </div>
             
             <div class="actions">
-                <button type="button" class="add-device-btn">Agregar dispositivo</button>
-                <button type="button" id="calculate-btn" class="calculate-btn">Calcular</button>
+                <button type="button" class="action-btn add-device-btn">
+                    <i class="fas fa-plus"></i>
+                    Agregar dispositivo
+                </button>
+                <button type="button" id="calculate-btn" class="action-btn calculate-btn">
+                    <i class="fas fa-calculator"></i>
+                    Calcular
+                </button>
             </div>
 
             <div class="results-section">
-                <h3 class="results-title">Resultados del cálculo:</h3>
+                <h3 class="results-title">
+                    <i class="fas fa-chart-line"></i>
+                    Resultados del cálculo
+                </h3>
                 <div class="results-placeholder" id="results-placeholder">
-                <!-- Mensaje por defecto -->
-                <p id="no-results">Los resultados se mostrarán aquí después de seleccionar tus electrodomésticos</p>
-                <!-- Valores a actualizar -->
-                <div id="results-values" style="display: none;">
-                    <p>Consumo total estimado: <strong><span id="res-total-watts">0</span> Watts</strong></p>
-                    <p>Consumo diario aproximado: <strong><span id="res-daily-kwh">0</span> kWh</strong></p>
-                    <p>Consumo mensual aproximado: <strong><span id="res-monthly-kwh">0</span> kWh</strong></p>
-                </div>
+                    <!-- Mensaje por defecto -->
+                    <p id="no-results">Los resultados se mostrarán aquí después de seleccionar tus electrodomésticos</p>
+                    
+                    <!-- Valores a actualizar -->
+                    <div id="results-values" style="display: none;">
+                        <div class="result-card">
+                            <div class="result-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="result-label">Consumo total estimado</div>
+                            <div class="result-value"><span id="res-total-watts">0</span> Watts</div>
+                        </div>
+                        
+                        <div class="result-card">
+                            <div class="result-icon">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                            <div class="result-label">Consumo diario aproximado</div>
+                            <div class="result-value"><span id="res-daily-kwh">0</span> kWh</div>
+                        </div>
+                        
+                        <div class="result-card">
+                            <div class="result-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="result-label">Consumo mensual aproximado</div>
+                            <div class="result-value"><span id="res-monthly-kwh">0</span> kWh</div>
+                        </div>
+                    </div>
                 </div>
             </div>          
         </div>
 
         <div class="right-panel">
-            <h3>💡 Consejos de Ahorro</h3>
+            <h3>
+                <i class="fas fa-lightbulb"></i>
+                Consejos de Ahorro
+            </h3>
             <p></p>
             
             <div class="energy-tip">
-                <h4>¿Sabías que?</h4>
-                <p>Un hogar promedio puede ahorrar hasta 30% de energía con simples cambios de hábitos.</p>
+                <h4>
+                    <i class="fas fa-info-circle"></i>
+                    ¿Sabías que?
+                </h4>
+                <div class="tip-content">
+                    <p>Un hogar promedio puede ahorrar hasta 30% de energía con simples cambios de hábitos.</p>
+                </div>
             </div>
         </div>
-
     </div>
     
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-    const btnAdd      = document.querySelector('.add-device-btn');
-    const btnCalc     = document.getElementById('calculate-btn');
-    const container   = document.getElementById('devices-container');
-    const tpl         = document.getElementById('device-template');
+        const btnAdd = document.querySelector('.add-device-btn');
+        const btnCalc = document.getElementById('calculate-btn');
+        const container = document.getElementById('devices-container');
+        const tpl = document.getElementById('device-template');
 
-    btnAdd.addEventListener('click', () => {
-        const clone = tpl.content.cloneNode(true);
-        const idx   = container.children.length + 1;
-        const sel   = clone.querySelector('.device-selector');
-        clone.querySelector('.device-usage-input').name = `usage-${idx}`;
-        clone.querySelector('.device-time-unit').name  = `unit-${idx}`;
-        sel.id    = `product-select-${idx}`;
-        sel.name  = `device-${idx}`;
-        container.appendChild(clone);
-    });  // agrega nuevos device-item 
-
-    btnCalc.addEventListener('click', () => {
-        const raw = Array.from(container.querySelectorAll('.device-item')).map(item => ({
-        id:    parseInt(item.querySelector('.device-selector').value, 10),
-        usage: parseFloat(item.querySelector('.device-usage-input').value),
-        unit:  item.querySelector('.device-time-unit').value
-        }));
-        const devices = raw.filter(d => !isNaN(d.id) && !isNaN(d.usage) && d.usage > 0);
-        if (devices.length === 0) {
-        document.getElementById('no-results').style.display = 'none';  
-        alert('Selecciona al menos un dispositivo y un tiempo de uso válido');
-        return;
+        // Agregar un dispositivo inicial al cargar la página
+        if (container.children.length === 0) {
+            btnAdd.click();
         }
-        fetch('/api/dispositivos/consumo', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ devices })
-        })
-        .then(res => res.json())
-        .then(data => {
-            // 1) Ocultar mensaje por defecto
-            document.getElementById('no-results').style.display = 'none';     
 
-            // 2) Rellenar cada span con los valores devueltos
-            document.getElementById('res-total-watts').textContent  = data.consumo_total_watts;  
-            document.getElementById('res-daily-kwh').textContent    = data.consumo_diario_kwh;    
-            document.getElementById('res-monthly-kwh').textContent  = data.consumo_mensual_kwh;   
+        btnAdd.addEventListener('click', () => {
+            const clone = tpl.content.cloneNode(true);
+            const idx = container.children.length + 1;
+            const sel = clone.querySelector('.device-selector');
+            clone.querySelector('.device-usage-input').name = `usage-${idx}`;
+            clone.querySelector('.device-time-unit').name = `unit-${idx}`;
+            sel.id = `product-select-${idx}`;
+            sel.name = `device-${idx}`;
+            container.appendChild(clone);
+        });
 
-            // 3) Mostrar el bloque de resultados
-            document.getElementById('results-values').style.display = 'block';           
-
-            // 4) Preparar el prompt para Gemini
-            const partialPrompt = 
-            `El usuario escogio los siguientes dispositivos: ${JSON.stringify(data.dispositivos_datos)}; ` +
-            `estos dispositivos representan un total de: ${data.consumo_total_watts} Watts; ` +
-            `el consumo diario de estos dispositivos en kwh es: ${data.consumo_diario_kwh}; ` +
-            `el consumo mensual de estos dispositivos en kwh es: ${data.consumo_mensual_kwh}.`;
-            console.log(partialPrompt)
-            // 5) Llamada al endpoint de Gemini
-            return fetch('/clasificar_texto', {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ text: partialPrompt })
-            });
-        })
-        .then(res => res.json())
-        .then(geminiResp => {
-            const ahorroParafo = document.querySelector('.right-panel > p');
-            if (ahorroParafo) {
-                ahorroParafo.innerHTML = geminiResp.response;
+        btnCalc.addEventListener('click', () => {
+            const raw = Array.from(container.querySelectorAll('.device-item')).map(item => ({
+                id: parseInt(item.querySelector('.device-selector').value, 10),
+                usage: parseFloat(item.querySelector('.device-usage-input').value),
+                unit: item.querySelector('.device-time-unit').value
+            }));
+            const devices = raw.filter(d => !isNaN(d.id) && !isNaN(d.usage) && d.usage > 0);
+            
+            if (devices.length === 0) {
+                document.getElementById('no-results').style.display = 'block';
+                document.getElementById('results-values').style.display = 'none';
+                alert('Selecciona al menos un dispositivo y un tiempo de uso válido');
+                return;
             }
-        })
-        .catch(err => {
-            console.error('Error en el flujo de cálculo o el LLM:', err);
-            alert('Ocurrio un error.');
+            
+            fetch('/api/dispositivos/consumo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ devices })
+            })
+            .then(res => res.json())
+            .then(data => {
+                // 1) Ocultar mensaje por defecto
+                document.getElementById('no-results').style.display = 'none';
+
+                // 2) Rellenar cada span con los valores devueltos
+                document.getElementById('res-total-watts').textContent = data.consumo_total_watts;
+                document.getElementById('res-daily-kwh').textContent = data.consumo_diario_kwh;
+                document.getElementById('res-monthly-kwh').textContent = data.consumo_mensual_kwh;
+
+                // 3) Mostrar el bloque de resultados
+                document.getElementById('results-values').style.display = 'grid';
+
+                // Efecto visual para los resultados
+                const resultCards = document.querySelectorAll('.result-card');
+                resultCards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.transform = 'translateY(-5px)';
+                    }, index * 100);
+                });
+
+                // 4) Preparar el prompt para Gemini
+                const partialPrompt = 
+                `El usuario escogió los siguientes dispositivos: ${JSON.stringify(data.dispositivos_datos)}; ` +
+                `estos dispositivos representan un total de: ${data.consumo_total_watts} Watts; ` +
+                `el consumo diario de estos dispositivos en kwh es: ${data.consumo_diario_kwh}; ` +
+                `el consumo mensual de estos dispositivos en kwh es: ${data.consumo_mensual_kwh}.`;
+                
+                // 5) Llamada al endpoint de Gemini
+                return fetch('/clasificar_texto', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: partialPrompt })
+                });
+            })
+            .then(res => res.json())
+            .then(geminiResp => {
+                const ahorroParafo = document.querySelector('.right-panel > p');
+                if (ahorroParafo) {
+                    ahorroParafo.innerHTML = geminiResp.response;
+                }
+            })
+            .catch(err => {
+                console.error('Error en el flujo de cálculo o el LLM:', err);
+                alert('Ocurrió un error al procesar tu solicitud.');
+            });
+        });
+
+        // Delegación para borrar
+        container.addEventListener('click', e => {
+            if (e.target.matches('.delete-btn') || e.target.matches('.delete-btn *')) {
+                const item = e.target.closest('.device-item');
+                item.style.opacity = '0';
+                setTimeout(() => {
+                    item.remove();
+                    if (container.children.length === 0) {
+                        document.getElementById('no-results').style.display = 'block';
+                        document.getElementById('results-values').style.display = 'none';
+                    }
+                }, 300);
+            }
         });
     });
-
-      // delegación para borrar
-    container.addEventListener('click', e => {
-        if (e.target.matches('.delete-btn'))
-          e.target.closest('.device-item').remove();  
-    });
-
-    });
-    
     </script>
-
 </body>
 </html>
