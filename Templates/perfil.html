@@ -4,66 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ECOENERGY - Mi Perfil</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #f5f9f8, #e0f2f1);
+            min-height: 100vh;
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .header {
-            background-color: #0a726e;
+            background: linear-gradient(135deg, #00796b, #004d40);
             color: white;
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
         .logo {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             font-weight: bold;
+            letter-spacing: 1px;
         }
         
         .lightbulb {
-            color: #ffde59;
+            color: #FFD700;
             font-size: 1.5rem;
         }
         
         .user-icon {
             width: 40px;
             height: 40px;
-            background-color: #000;
+            background-color: white;
             border-radius: 50%;
             cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .user-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .user-icon i {
+            color: #00796b;
+            font-size: 1.2rem;
         }
         
         .page-title {
             padding: 20px;
             background-color: white;
             border-bottom: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
         
         .page-title h1 {
             font-size: 1.2rem;
             font-weight: bold;
             text-transform: uppercase;
+            color: #00695c;
         }
         
         .profile-section {
-            background-color: #b2dfdb;
-            padding: 20px;
+            background-color: white;
+            padding: 25px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
         
         .profile-email {
@@ -73,21 +99,20 @@
         }
         
         .profile-pic {
-            width: 50px;
-            height: 50px;
-            background-color: white;
+            width: 70px;
+            height: 70px;
+            background: #e0f2f1;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         
-        .profile-pic .user-pic {
-            width: 40px;
-            height: 40px;
-            background-color: #000;
-            border-radius: 50%;
+        .profile-pic i {
+            font-size: 2rem;
+            color: #00796b;
         }
         
         .email {
@@ -96,57 +121,71 @@
         }
         
         .edit-btn {
-            background-color: #0a726e;
+            background: linear-gradient(135deg, #00796b, #00695c);
             color: white;
             border: none;
-            padding: 10px 30px;
-            border-radius: 5px;
+            padding: 12px 30px;
+            border-radius: 8px;
             font-size: 1rem;
             cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .edit-btn:hover {
-            background-color: #085856;
+            background: linear-gradient(135deg, #00897b, #00796b);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
         
         .info-section {
             background-color: white;
-            padding: 10px 20px;
+            margin: 0 20px 20px;
+            padding: 20px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
         
         .info-item {
             display: flex;
             align-items: center;
             gap: 15px;
-            padding: 10px 0;
+            padding: 15px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.3s;
+            border-radius: 12px;
+            border: 1px solid transparent;
         }
         
         .info-item:hover {
             background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
         }
         
         .icon-container {
             width: 50px;
             height: 50px;
-            background-color: #f5f5f5;
+            background: #e0f2f1;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         
         .icon {
             font-size: 1.5rem;
-            color: #333;
-        }
-        
-        .phone-icon {
-            transform: rotate(100deg);
+            color: #00695c;
         }
         
         .info-content {
@@ -159,6 +198,8 @@
             font-weight: bold;
             text-transform: uppercase;
             font-size: 0.8rem;
+            color: #00695c;
+            margin-bottom: 5px;
         }
         
         .info-value {
@@ -167,14 +208,20 @@
         
         .privacy-section {
             background-color: white;
-            margin-top: 20px;
+            margin: 0 20px 20px;
             padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
         
         .privacy-title {
             font-weight: bold;
             text-transform: uppercase;
             margin-bottom: 20px;
+            color: #00695c;
+            font-size: 1rem;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
         }
         
         .delete-account {
@@ -182,18 +229,20 @@
             align-items: center;
             gap: 15px;
             cursor: pointer;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background-color 0.2s;
+            padding: 15px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            border: 1px solid transparent;
         }
         
         .delete-account:hover {
             background-color: #fff1f0;
+            border: 1px solid #ffcccc;
         }
         
         .delete-icon {
             font-size: 1.5rem;
-            color: #666;
+            color: #e74c3c;
         }
         
         .delete-info {
@@ -203,61 +252,84 @@
         
         .delete-title {
             font-weight: bold;
-            color: #333;
+            color: #e74c3c;
         }
         
         .delete-warning {
             font-size: 0.8rem;
             color: #666;
+            margin-top: 5px;
         }
         
         .dropdown-menu {
             position: absolute;
             right: 20px;
-            top: 80px;
+            top: 70px;
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
             width: 250px;
             overflow: hidden;
             display: none;
             z-index: 100;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .user-greeting {
-            padding: 15px;
+            padding: 20px;
             display: flex;
             align-items: center;
             gap: 15px;
             border-bottom: 1px solid #eee;
+            background: #f9f9f9;
         }
         
         .greeting-text {
-            color: #666;
+            color: #444;
+            font-weight: 500;
         }
         
         .menu-options {
-            padding: 15px;
+            padding: 10px;
         }
         
         .menu-item {
             display: flex;
             align-items: center;
             gap: 15px;
-            padding: 10px 0;
+            padding: 12px;
             cursor: pointer;
-            border-radius: 5px;
-            padding: 10px;
-            transition: background-color 0.2s;
+            border-radius: 8px;
+            transition: all 0.3s;
+            color: #333;
         }
         
         .menu-item:hover {
             background-color: #f5f5f5;
         }
         
+        .menu-item.logout-item {
+            color: #e74c3c;
+        }
+        
+        .menu-item.logout-item:hover {
+            background-color: #fff1f0;
+        }
+        
         .menu-icon {
             font-size: 1.2rem;
-            color: #333;
+            color: #00695c;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .menu-icon.logout-menu-icon {
+            color: #e74c3c;
         }
         
         /* Modal styles */
@@ -272,14 +344,16 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            animation: fadeIn 0.3s ease;
         }
         
         .modal-content {
             background-color: white;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 30px;
+            border-radius: 15px;
             width: 90%;
             max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
         
         .modal-header {
@@ -287,11 +361,14 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
         }
         
         .modal-title {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
+            color: #00695c;
         }
         
         .close-modal {
@@ -299,40 +376,56 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
+            color: #888;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #333;
         }
         
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: bold;
             font-size: 0.9rem;
+            color: #555;
         }
         
         input {
             width: 100%;
-            padding: 10px;
+            padding: 12px 15px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #00695c;
+            box-shadow: 0 0 0 2px rgba(0, 105, 92, 0.2);
         }
         
         .modal-footer {
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 15px;
+            margin-top: 25px;
         }
         
         .btn {
-            padding: 10px 20px;
+            padding: 12px 25px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s;
         }
         
         .btn-cancel {
@@ -340,36 +433,106 @@
             color: #333;
         }
         
+        .btn-cancel:hover {
+            background-color: #e0e0e0;
+        }
+        
         .btn-save {
-            background-color: #0a726e;
+            background: linear-gradient(135deg, #00796b, #00695c);
             color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .btn-save:hover {
-            background-color: #085856;
+            background: linear-gradient(135deg, #00897b, #00796b);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
         
         .btn-delete {
             background-color: #e74c3c;
             color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .btn-delete:hover {
             background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
         
         /* Delete confirmation modal */
         .delete-modal .modal-content {
-            max-width: 400px;
+            max-width: 450px;
         }
         
         .delete-modal .modal-body {
             text-align: center;
-            margin: 20px 0;
+            margin: 25px 0;
         }
         
         .delete-modal .modal-footer {
             justify-content: center;
+        }
+        
+        .warning-icon {
+            font-size: 3rem;
+            color: #e74c3c;
+            margin-bottom: 15px;
+        }
+        
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .toast.error {
+            background-color: #e74c3c;
+        }
+        
+        @media (max-width: 768px) {
+            .info-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-section, .info-section, .privacy-section {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            .profile-section {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .profile-email {
+                flex-direction: column;
+            }
+            
+            .edit-btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -377,32 +540,39 @@
     <div class="header">
         <div class="logo">
             ECOENERGY
-            <span class="lightbulb">💡</span>
+            <span class="lightbulb">
+                <i class="fas fa-lightbulb"></i>
+            </span>
         </div>
-        <div class="user-icon" id="toggleMenu"></div>
+        <div class="user-icon" id="toggleMenu">
+            <i class="fas fa-user"></i>
+        </div>
     </div>
     
     <div class="page-title">
-        <h1>MI PERFIL/ DATOS PERSONALES</h1>
+        <h1><i class="fas fa-user-circle" style="margin-right: 10px;"></i>MI PERFIL / DATOS PERSONALES</h1>
     </div>
     
     <div class="profile-section">
         <div class="profile-email">
             <div class="profile-pic">
-                <div class="user-pic"></div>
+                <i class="fas fa-user"></i>
             </div>
             <div class="email">
                 <strong>{{ usuario.correo }}</strong><br>
-            
+                <span style="color: #777; font-size: 0.9rem;">Usuario activo</span>
             </div>
         </div>
-        <button class="edit-btn" id="editProfileBtn">Editar</button>
+        <button class="edit-btn" id="editProfileBtn">
+            <i class="fas fa-pencil-alt"></i>
+            Editar perfil
+        </button>
     </div>
     
     <div class="info-section">
         <div class="info-item" id="editPersonalData">
             <div class="icon-container">
-                <div class="user-pic"></div>
+                <i class="fas fa-user icon"></i>
             </div>
             <div class="info-content">
                 <div class="info-title">DATOS PERSONALES</div>
@@ -410,33 +580,23 @@
             </div>
         </div>
         
-        <div class="info-item" id="editPhone">
-            <div class="icon-container">
-                <div class="icon phone-icon">📞</div>
-            </div>
-            <div class="info-content">
-                <div class="info-title">TELÉFONOS</div>
-                <div class="info-value" id="phoneValue">Agregar teléfono</div>
-            </div>
-        </div>
-        
         <div class="info-item" id="editEmail">
             <div class="icon-container">
-                <div class="icon">✉️</div>
+                <i class="fas fa-envelope icon"></i>
             </div>
             <div class="info-content">
-                <div class="info-title">EMAILS</div>
+                <div class="info-title">EMAIL</div>
                 <div class="info-value" id="emailValue">{{ usuario.correo }}</div>
             </div>
         </div>
         
         <div class="info-item" id="editPassword">
             <div class="icon-container">
-                <div class="icon">🔒</div>
+                <i class="fas fa-lock icon"></i>
             </div>
             <div class="info-content">
                 <div class="info-title">CONTRASEÑA</div>
-                <div class="info-value">***********</div>
+                <div class="info-value">●●●●●●●●●●</div>
             </div>
         </div>
     </div>
@@ -444,30 +604,39 @@
     <div class="privacy-section">
         <div class="privacy-title">PRIVACIDAD Y SEGURIDAD</div>
         <div class="delete-account" id="deleteAccount">
-            <div class="icon delete-icon">🗑️</div>
+            <div class="icon-container" style="background-color: #fff1f0;">
+                <i class="fas fa-trash-alt delete-icon"></i>
+            </div>
             <div class="delete-info">
                 <div class="delete-title">Eliminar mi cuenta</div>
-                <div class="delete-warning">Una vez eliminada tu cuenta no podrás recuperarla.</div>
+                <div class="delete-warning">Una vez eliminada tu cuenta no podrás recuperarla y perderás todos tus datos.</div>
             </div>
         </div>
     </div>
     
     <div class="dropdown-menu" id="userMenu">
         <div class="user-greeting">
-            <div class="profile-pic">
-                <div class="user-pic"></div>
+            <div class="profile-pic" style="width: 40px; height: 40px;">
+                <i class="fas fa-user" style="font-size: 1.2rem;"></i>
             </div>
             <div class="greeting-text">Hola, {{ usuario.nombre }}</div>
-
         </div>
         <div class="menu-options">
-            <div class="menu-item">
-                <span class="menu-icon">👤</span>
-                <span>Datos Personales</span>
+            <div class="menu-item" id="menuProfile">
+                <i class="fas fa-user-circle menu-icon"></i>
+                <span>Mi Perfil</span>
             </div>
-            <div class="menu-item" id="menuDeleteAccount">
-                <span class="menu-icon">🗑️</span>
-                <span>Eliminar Cuenta</span>
+            <div class="menu-item" id="menuSettings">
+                <i class="fas fa-cog menu-icon"></i>
+                <span>Configuración</span>
+            </div>
+            <div class="menu-item" id="menuHelp">
+                <i class="fas fa-question-circle menu-icon"></i>
+                <span>Ayuda</span>
+            </div>
+            <div class="menu-item logout-item" id="menuLogout">
+                <i class="fas fa-sign-out-alt menu-icon logout-menu-icon"></i>
+                <span>Cerrar Sesión</span>
             </div>
         </div>
     </div>
@@ -481,7 +650,7 @@
             </div>
             <div class="form-group">
                 <label for="name">Nombre</label>
-                <input type="text" id="name" placeholder="Ingresa tu nombre">
+                <input type="text" id="name" placeholder="Ingresa tu nombre" value="{{ usuario.nombre }}">
             </div>
             <div class="form-group">
                 <label for="lastName">Apellido</label>
@@ -494,24 +663,6 @@
             <div class="modal-footer">
                 <button class="btn btn-cancel closeModal">Cancelar</button>
                 <button class="btn btn-save" id="savePersonalData">Guardar</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Phone Modal -->
-    <div class="modal" id="phoneModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Teléfono</div>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="form-group">
-                <label for="phone">Número de teléfono</label>
-                <input type="tel" id="phone" placeholder="Ingresa tu número de teléfono">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-cancel closeModal">Cancelar</button>
-                <button class="btn btn-save" id="savePhone">Guardar</button>
             </div>
         </div>
     </div>
@@ -538,7 +689,7 @@
     <div class="modal" id="passwordModal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">Contraseña</div>
+                <div class="modal-title">Cambiar Contraseña</div>
                 <button class="close-modal">&times;</button>
             </div>
             <div class="form-group">
@@ -555,7 +706,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-cancel closeModal">Cancelar</button>
-                <button class="btn btn-save" id="savePassword">Guardar</button>
+                <button class="btn btn-save" id="savePassword">Guardar cambios</button>
             </div>
         </div>
     </div>
@@ -568,15 +719,32 @@
                 <button class="close-modal">&times;</button>
             </div>
             <div class="modal-body">
-                <p>¿Estás seguro de que deseas eliminar tu cuenta?</p>
-                <p class="delete-warning">Esta acción no se puede deshacer.</p>
+                <div class="warning-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <p style="font-size: 1.1rem; font-weight: 500; margin-bottom: 10px;">¿Estás seguro de que deseas eliminar tu cuenta?</p>
+                <p class="delete-warning">Esta acción es permanente y no se puede deshacer. Todos tus datos y configuraciones se perderán.</p>
+                
+                <div class="form-group" style="margin-top: 20px;">
+                    <label for="deletePassword">Para confirmar, ingresa tu contraseña</label>
+                    <input type="password" id="deletePassword" placeholder="Ingresa tu contraseña">
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-cancel closeModal">Cancelar</button>
-                <button class="btn btn-delete" id="confirmDelete">Eliminar cuenta</button>
+                <button class="btn btn-delete" id="confirmDelete">Eliminar mi cuenta</button>
             </div>
         </div>
     </div>
-
-</body>
+    
+    <!-- Toast notifications -->
+    <div class="toast" id="successToast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Cambios guardados correctamente</span>
+    </div>
+    
+    <div class="toast error" id="errorToast">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="errorToastMessage">Ha ocurrido un error</span>
+    </div>
 </html>
