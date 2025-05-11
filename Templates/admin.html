@@ -338,10 +338,6 @@
             <div class="admin-badge">
                 <span class="admin-icon"><i class="fas fa-user-shield"></i></span> MODO ADMINISTRADOR
             </div>
-            <a href="{{ url_for('vista_usuarios.perfil') }}" class="auth-links">
-                <div class="profile-icon"><i class="fas fa-user"></i></div>
-            </a>
-            
         </div>
     </div>
 
@@ -375,7 +371,7 @@
             </div>
 
             <h3><i class="fas fa-database energy-icon"></i> Gestión de Productos</h3>
-            <form class="product-form" action="{{ url_for('admin.crear_dispositivo_route') }}" method="post">
+            <form id="form-crear-dispositivo" class="product-form">
                 <input type="text" id="nombre_producto" name="nombre_producto" placeholder="Nombre del producto" required>
                 <select id="categoria" name="categoria">
                     <option value="">Selecciona categoría</option>
@@ -423,49 +419,87 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Manejar botones de eliminación
-            document.querySelectorAll('.delete-btn').forEach(boton => {
-                boton.addEventListener('click', function() {
-                    const idDispositivo = this.getAttribute('data-id-dispositivo');
-                    if (idDispositivo) {
-                        if (confirm("¿Estás seguro de que quieres eliminar este dispositivo?")) {
-                            const form = document.createElement('form');
-                            form.method = 'POST';
-                            form.action = '{{ url_for("admin.eliminar_dispositivo_route", id=0) }}'.replace('0', idDispositivo);
-                            document.body.appendChild(form);
-                            form.submit();
-                        }
-                    }
-                });
+        document.getElementById('lista_productos').addEventListener('click', function(ev) {
+        const boton = ev.target.closest('.delete-btn');
+        if (!boton) return;
+        const idDispositivo = boton.getAttribute('data-id-dispositivo');
+        if (confirm("¿Estás seguro de que quieres eliminar este dispositivo?")) {
+            fetch(`{{ url_for("admin.eliminar_dispositivo_route", id=0) }}`.replace('0', idDispositivo), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => {
+            if (response.ok) {
+                alert("Dispositivo eliminado exitosamente.");
+                boton.closest("tr").remove();
+                let total = document.getElementById('total-dispositivos');
+                total.textContent = parseInt(total.textContent, 10) - 1;
+            } else {
+                alert("Error al eliminar el dispositivo.");
+            }
+            });
+        }
+        });
+
+        document.getElementById('form-crear-dispositivo').addEventListener('submit', async function(event) {
+            // Manejar boton de agregación
+            event.preventDefault();
+
+            const form = event.target;
+            const nombre = form.nombre_producto.value.trim();
+            const categoria = form.categoria.value;
+            const vatios = form.vatios.value;
+            const url = "{{ url_for('admin.crear_dispositivo_route') }}";
+
+            // Crea un FormData para enviar
+            const formData = new FormData();
+            formData.append('nombre_producto', nombre);
+            formData.append('categoria', categoria);
+            formData.append('vatios', vatios);
+
+            const response = await fetch(url, {
+                method: 'POST',
+                body: formData
             });
 
-            // Calcular consumo total y actualizar estadísticas
-            function actualizarEstadisticas() {
-                const filas = document.querySelectorAll('#lista_productos tr');
-                let consumoTotal = 0;
-                let totalDispositivos = filas.length;
-                
-                filas.forEach(fila => {
-                    const consumoTexto = fila.cells[2].textContent;
-                    const consumo = parseInt(consumoTexto);
-                    if (!isNaN(consumo)) {
-                        consumoTotal += consumo;
-                    }
-                });
-                
-                // Actualizar valores en las tarjetas de estadísticas
-                document.getElementById('consumo-total').textContent = consumoTotal + ' W';
-                document.getElementById('total-dispositivos').textContent = totalDispositivos;
-                
-                // Cálculo simple de ahorro potencial (sólo ilustrativo)
-                const ahorroPotencial = totalDispositivos > 0 ? Math.floor(20 + Math.random() * 15) : 0;
-                document.getElementById('ahorro-potencial').textContent = ahorroPotencial + '%';
+            const result = await response.json();
+
+            if (!response.ok) {
+                alert(`Error: ${result.error}`);
+            } else {
+                alert('Dispositivo creado exitosamente');
+                let totalElement = document.getElementById('total-dispositivos');
+                let totalValue = parseInt(totalElement.textContent, 10);
+                totalElement.textContent = totalValue + 1;
+
+                // Crear nueva fila y agregar a la tabla
+                const tbody = document.getElementById('lista_productos');
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${result.nombre_producto}</td>
+                    <td>${result.categoria}</td>
+                    <td>${result.vatios} W</td>
+                    <td>
+                    <button type="button" class="delete-btn"
+                            data-id-dispositivo="${result.id}">
+                        <i class="fas fa-trash-alt"></i> Eliminar
+                    </button>
+                    </td>
+                `;
+                tbody.appendChild(newRow);
+                form.reset();
             }
-            
-            // Ejecutar al cargar la página
-            actualizarEstadisticas();
         });
+
+        // Actualizar estadísticas
+        function actualizarEstadisticas() {
+            const filas = document.querySelectorAll('#lista_productos tr');
+            let totalDispositivos = filas.length;
+            document.getElementById('total-dispositivos').textContent = totalDispositivos;
+        }
+        
+        // Ejecutar al cargar la página
+        actualizarEstadisticas();
     </script>
 </body>
 </html>

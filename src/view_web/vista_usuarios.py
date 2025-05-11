@@ -13,9 +13,12 @@ blueprint = Blueprint('vista_usuarios', __name__, template_folder= "Templates")
 def login_requerido(f):
     @wraps(f)
     def decorador(*args, **kwargs):
-        if not session.get('usuario'):               
+        usuario = session.get('usuario')
+        if not usuario:               
             flash("Debes iniciar sesión para acceder a esta página", "warning")
             return redirect(url_for('vista_usuarios.login'))
+        if usuario.get('es_admin'):
+            return redirect(url_for('admin.inicio_admin'))
         return f(*args, **kwargs)
     return decorador
 
@@ -108,6 +111,6 @@ def recuperar():
 @login_requerido
 def perfil():
     usuario= session.get('usuario')
-    print(usuario)
+    #print(usuario)
     return render_template('perfil.html', usuario=usuario)
 

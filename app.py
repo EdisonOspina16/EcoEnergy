@@ -18,4 +18,6 @@ app.register_blueprint(vista_usuarios.blueprint)
 app.register_blueprint(vista_admin.bp_admin)
 
 if __name__ == '__main__':
+    
+    
     app.run(debug=True)
