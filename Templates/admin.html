@@ -345,6 +345,29 @@
             </a>
 
         </div>
+
+    <div class="dropdown-menu" id="dropdownMenu">
+        <div class="user-greeting">
+            <div class="profile-pic" style="width: 40px; height: 40px;">
+                <i class="fas fa-user" style="font-size: 1.2rem;"></i>
+            </div>
+            <div class="greeting-text">Hola, {{ usuario.nombre }}</div>
+        </div>
+        <div class="menu-options">
+            <div class="menu-item" id="menuProfile">
+                <i class="fas fa-user-circle menu-icon"></i>
+                <span>Mi Perfil</span>
+            </div>
+            <div class="menu-item logout-item" id="menuLogout">
+                <i class="fas fa-sign-out-alt menu-icon logout-menu-icon"></i>
+                <span>Cerrar Sesión</span>
+            </div>
+        </div>
+    </div>
+
+
+
+
     </div>
 
     <div class="main-content">
@@ -507,5 +530,37 @@
         // Ejecutar al cargar la página
         actualizarEstadisticas();
     </script>
+
+<script>
+    // User menu toggle
+    const userIcon = document.querySelector('.user-icon');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+    userIcon.addEventListener('click', function(e) {
+        e.stopPropagation(); // Evita que el clic se propague al documento
+        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    });
+    
+    // Cerrar el menú al hacer clic fuera de él
+    document.addEventListener('click', function() {
+        dropdownMenu.style.display = 'none';
+    });
+    
+    // Evitar que el menú se cierre al hacer clic dentro de él
+    dropdownMenu.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+    
+    // Funcionalidad PERFIL
+    document.getElementById('menuProfile').addEventListener('click', function() {
+        window.location.href = "{{ url_for('vista_usuarios.perfil') }}";
+    });
+    
+    // Cerrar sesión (usando tu ruta de Flask)
+    document.getElementById('menuLogout').addEventListener('click', function() {
+        window.location.href = "{{ url_for('vista_usuarios.logout') }}";
+    });
+</script>
+
 </body>
 </html>

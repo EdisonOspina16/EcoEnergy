@@ -544,7 +544,7 @@
                 <i class="fas fa-lightbulb"></i>
             </span>
         </div>
-        <div class="user-icon" id="toggleMenu">
+        <div class="user-icon" id="userMenu">
             <i class="fas fa-user"></i>
         </div>
     </div>
@@ -615,8 +615,10 @@
             </div>
         </div>
     </div>
+
+
     
-    <div class="dropdown-menu" id="userMenu">
+    <div class="dropdown-menu" id="dropdownMenu">
         <div class="user-greeting">
             <div class="profile-pic" style="width: 40px; height: 40px;">
                 <i class="fas fa-user" style="font-size: 1.2rem;"></i>
@@ -628,20 +630,21 @@
                 <i class="fas fa-user-circle menu-icon"></i>
                 <span>Mi Perfil</span>
             </div>
-            <div class="menu-item" id="menuSettings">
-                <i class="fas fa-cog menu-icon"></i>
-                <span>Configuración</span>
-            </div>
-            <div class="menu-item" id="menuHelp">
-                <i class="fas fa-question-circle menu-icon"></i>
-                <span>Ayuda</span>
-            </div>
             <div class="menu-item logout-item" id="menuLogout">
                 <i class="fas fa-sign-out-alt menu-icon logout-menu-icon"></i>
                 <span>Cerrar Sesión</span>
             </div>
         </div>
     </div>
+    
+
+
+
+
+
+
+
+
     
     <!-- Personal Data Modal -->
     <div class="modal" id="personalDataModal">
@@ -749,4 +752,36 @@
         <i class="fas fa-exclamation-circle"></i>
         <span id="errorToastMessage">Ha ocurrido un error</span>
     </div>
+
+<script>
+    // User menu toggle
+    const userIcon = document.querySelector('.user-icon');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+    userIcon.addEventListener('click', function(e) {
+        e.stopPropagation(); // Evita que el clic se propague al documento
+        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    });
+    
+    // Cerrar el menú al hacer clic fuera de él
+    document.addEventListener('click', function() {
+        dropdownMenu.style.display = 'none';
+    });
+    
+    // Evitar que el menú se cierre al hacer clic dentro de él
+    dropdownMenu.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+    
+    // Funcionalidad PERFIL
+    document.getElementById('menuProfile').addEventListener('click', function() {
+        window.location.href = "{{ url_for('vista_usuarios.perfil') }}";
+    });
+    
+    // Cerrar sesión (usando tu ruta de Flask)
+    document.getElementById('menuLogout').addEventListener('click', function() {
+        window.location.href = "{{ url_for('vista_usuarios.logout') }}";
+    });
+</script>
+
 </html>

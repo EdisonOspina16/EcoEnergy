@@ -84,7 +84,7 @@ def login():
 def logout():
     session.clear()
     flash("Sesión cerrada", "info")
-    return redirect(url_for('vista_usuarios.login'))
+    return redirect(url_for('vista_usuarios.inicio'))
 
 
 @blueprint.route('/recuperar', methods=['GET', 'POST'])
