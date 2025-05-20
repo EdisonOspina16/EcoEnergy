@@ -26,6 +26,7 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
         .logo {
@@ -93,6 +94,77 @@
 
         .profile-icon:hover {
             transform: scale(1.1);
+        }
+
+        /* Estilos para el menú desplegable */
+        .dropdown-menu {
+            position: absolute;
+            right: 40px;
+            top: 80px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            width: 250px;
+            overflow: hidden;
+            display: none;
+            z-index: 1000;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-greeting {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #eee;
+            background: #f9f9f9;
+        }
+
+        .greeting-text {
+            color: #444;
+            font-weight: 500;
+        }
+
+        .menu-options {
+            padding: 10px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+            color: #333;
+        }
+
+        .menu-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .menu-item.logout-item {
+            color: #e74c3c;
+        }
+
+        .menu-item.logout-item:hover {
+            background-color: #fff1f0;
+        }
+
+        .menu-icon {
+            font-size: 1.2rem;
+            color: #00695c;
+            width: 24px;
+            text-align: center;
+        }
+
+        .menu-icon.logout-menu-icon {
+            color: #e74c3c;
         }
 
         .main-content {
@@ -323,6 +395,11 @@
             .panel-stats {
                 flex-direction: column;
             }
+
+            .dropdown-menu {
+                right: 20px;
+                width: 220px;
+            }
         }
     </style>
 </head>
@@ -334,39 +411,39 @@
                 <i class="fas fa-lightbulb"></i>
             </span>
         </div>
+
         <div class="admin-section">
-            
             <div class="admin-badge">
                 <span class="admin-icon"><i class="fas fa-user-shield"></i></span> MODO ADMINISTRADOR
             </div>
-
-            <a href="{{ url_for('vista_usuarios.perfil') }}" class="auth-links">
-                <div class="profile-icon"><i class="fas fa-user"></i></div>
-            </a>
-
-        </div>
-
-    <div class="dropdown-menu" id="dropdownMenu">
-        <div class="user-greeting">
-            <div class="profile-pic" style="width: 40px; height: 40px;">
-                <i class="fas fa-user" style="font-size: 1.2rem;"></i>
-            </div>
-            <div class="greeting-text">Hola, {{ usuario.nombre }}</div>
-        </div>
-        <div class="menu-options">
-            <div class="menu-item" id="menuProfile">
-                <i class="fas fa-user-circle menu-icon"></i>
-                <span>Mi Perfil</span>
-            </div>
-            <div class="menu-item logout-item" id="menuLogout">
-                <i class="fas fa-sign-out-alt menu-icon logout-menu-icon"></i>
-                <span>Cerrar Sesión</span>
+            
+            <div class="profile-icon" id="userMenu">
+                <i class="fas fa-user"></i>
             </div>
         </div>
+
+        <!-- Menú desplegable (solo visible si hay usuario) -->
+        {% if usuario %}
+        <div class="dropdown-menu" id="dropdownMenu">
+            <div class="user-greeting">
+                <div class="profile-pic" style="width: 40px; height: 40px;">
+                    <i class="fas fa-user" style="font-size: 1.2rem;"></i>
+                </div>
+                <div class="greeting-text">Hola, {{ usuario.nombre }}</div>
+            </div>
+            <div class="menu-options">
+                <div class="menu-item" id="menuProfile">
+                    <i class="fas fa-user-circle menu-icon"></i>
+                    <span>Mi Perfil</span>
+                </div>
+                <div class="menu-item logout-item" id="menuLogout">
+                    <i class="fas fa-sign-out-alt menu-icon logout-menu-icon"></i>
+                    <span>Cerrar Sesión</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
-
-
-
 
     </div>
 
@@ -448,119 +525,116 @@
     </div>
 
     <script>
-        document.getElementById('lista_productos').addEventListener('click', function(ev) {
-        const boton = ev.target.closest('.delete-btn');
-        if (!boton) return;
-        const idDispositivo = boton.getAttribute('data-id-dispositivo');
-        if (confirm("¿Estás seguro de que quieres eliminar este dispositivo?")) {
-            fetch(`{{ url_for("admin.eliminar_dispositivo_route", id=0) }}`.replace('0', idDispositivo), {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
-            })
-            .then(response => {
-            if (response.ok) {
-                alert("Dispositivo eliminado exitosamente.");
-                boton.closest("tr").remove();
-                let total = document.getElementById('total-dispositivos');
-                total.textContent = parseInt(total.textContent, 10) - 1;
-            } else {
-                alert("Error al eliminar el dispositivo.");
+        // Control del menú desplegable
+        document.addEventListener('DOMContentLoaded', function() {
+            const userIcon = document.getElementById('userMenu');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            
+            if (userIcon && dropdownMenu) {
+                userIcon.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+                });
+                
+                document.addEventListener('click', function() {
+                    dropdownMenu.style.display = 'none';
+                });
+                
+                dropdownMenu.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+                
+                document.getElementById('menuProfile').addEventListener('click', function() {
+                    window.location.href = "{{ url_for('vista_usuarios.perfil') }}";
+                });
+                
+                document.getElementById('menuLogout').addEventListener('click', function() {
+                    window.location.href = "{{ url_for('vista_usuarios.logout') }}";
+                });
             }
-            });
-        }
-        });
-
-        document.getElementById('form-crear-dispositivo').addEventListener('submit', async function(event) {
-            // Manejar boton de agregación
-            event.preventDefault();
-
-            const form = event.target;
-            const nombre = form.nombre_producto.value.trim();
-            const categoria = form.categoria.value;
-            const vatios = form.vatios.value;
-            const url = "{{ url_for('admin.crear_dispositivo_route') }}";
-
-            // Crea un FormData para enviar
-            const formData = new FormData();
-            formData.append('nombre_producto', nombre);
-            formData.append('categoria', categoria);
-            formData.append('vatios', vatios);
-
-            const response = await fetch(url, {
+            document.getElementById('lista_productos').addEventListener('click', function(ev) {
+            const boton = ev.target.closest('.delete-btn');
+            if (!boton) return;
+            const idDispositivo = boton.getAttribute('data-id-dispositivo');
+            if (confirm("¿Estás seguro de que quieres eliminar este dispositivo?")) {
+                fetch(`{{ url_for("admin.eliminar_dispositivo_route", id=0) }}`.replace('0', idDispositivo), {
                 method: 'POST',
-                body: formData
+                headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => {
+                if (response.ok) {
+                    alert("Dispositivo eliminado exitosamente.");
+                    boton.closest("tr").remove();
+                    let total = document.getElementById('total-dispositivos');
+                    total.textContent = parseInt(total.textContent, 10) - 1;
+                } else {
+                    alert("Error al eliminar el dispositivo.");
+                }
+                });
+            }
             });
 
-            const result = await response.json();
+            document.getElementById('form-crear-dispositivo').addEventListener('submit', async function(event) {
+                // Manejar boton de agregación
+                event.preventDefault();
 
-            if (!response.ok) {
-                alert(`Error: ${result.error}`);
-            } else {
-                alert('Dispositivo creado exitosamente');
-                let totalElement = document.getElementById('total-dispositivos');
-                let totalValue = parseInt(totalElement.textContent, 10);
-                totalElement.textContent = totalValue + 1;
+                const form = event.target;
+                const nombre = form.nombre_producto.value.trim();
+                const categoria = form.categoria.value;
+                const vatios = form.vatios.value;
+                const url = "{{ url_for('admin.crear_dispositivo_route') }}";
 
-                // Crear nueva fila y agregar a la tabla
-                const tbody = document.getElementById('lista_productos');
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                    <td>${result.nombre_producto}</td>
-                    <td>${result.categoria}</td>
-                    <td>${result.vatios} W</td>
-                    <td>
-                    <button type="button" class="delete-btn"
-                            data-id-dispositivo="${result.id}">
-                        <i class="fas fa-trash-alt"></i> Eliminar
-                    </button>
-                    </td>
-                `;
-                tbody.appendChild(newRow);
-                form.reset();
+                // Crea un FormData para enviar
+                const formData = new FormData();
+                formData.append('nombre_producto', nombre);
+                formData.append('categoria', categoria);
+                formData.append('vatios', vatios);
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    alert(`Error: ${result.error}`);
+                } else {
+                    alert('Dispositivo creado exitosamente');
+                    let totalElement = document.getElementById('total-dispositivos');
+                    let totalValue = parseInt(totalElement.textContent, 10);
+                    totalElement.textContent = totalValue + 1;
+
+                    // Crear nueva fila y agregar a la tabla
+                    const tbody = document.getElementById('lista_productos');
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${result.nombre_producto}</td>
+                        <td>${result.categoria}</td>
+                        <td>${result.vatios} W</td>
+                        <td>
+                        <button type="button" class="delete-btn"
+                                data-id-dispositivo="${result.id}">
+                            <i class="fas fa-trash-alt"></i> Eliminar
+                        </button>
+                        </td>
+                    `;
+                    tbody.appendChild(newRow);
+                    form.reset();
+                }
+            });
+
+            // Actualizar estadísticas
+            function actualizarEstadisticas() {
+                const filas = document.querySelectorAll('#lista_productos tr');
+                let totalDispositivos = filas.length;
+                document.getElementById('total-dispositivos').textContent = totalDispositivos;
             }
-        });
-
-        // Actualizar estadísticas
-        function actualizarEstadisticas() {
-            const filas = document.querySelectorAll('#lista_productos tr');
-            let totalDispositivos = filas.length;
-            document.getElementById('total-dispositivos').textContent = totalDispositivos;
-        }
+            
+            // Ejecutar al cargar la página
+            actualizarEstadisticas();
         
-        // Ejecutar al cargar la página
-        actualizarEstadisticas();
+        });
     </script>
-
-<script>
-    // User menu toggle
-    const userIcon = document.querySelector('.user-icon');
-    const dropdownMenu = document.querySelector('.dropdown-menu');
-    
-    userIcon.addEventListener('click', function(e) {
-        e.stopPropagation(); // Evita que el clic se propague al documento
-        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-    });
-    
-    // Cerrar el menú al hacer clic fuera de él
-    document.addEventListener('click', function() {
-        dropdownMenu.style.display = 'none';
-    });
-    
-    // Evitar que el menú se cierre al hacer clic dentro de él
-    dropdownMenu.addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
-    
-    // Funcionalidad PERFIL
-    document.getElementById('menuProfile').addEventListener('click', function() {
-        window.location.href = "{{ url_for('vista_usuarios.perfil') }}";
-    });
-    
-    // Cerrar sesión (usando tu ruta de Flask)
-    document.getElementById('menuLogout').addEventListener('click', function() {
-        window.location.href = "{{ url_for('vista_usuarios.logout') }}";
-    });
-</script>
-
 </body>
 </html>

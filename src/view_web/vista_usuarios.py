@@ -34,8 +34,16 @@ def inicio():
         else:
             return render_template('inicio.html', products_by_category=productos_por_categoria, devices=[], usuario=usuario)
     else:
-        return render_template('inicio.html', products_by_category=productos_por_categoria, devices=[])
-    
+        return render_template('inicio.html', products_by_category=productos_por_categoria, devices=[],usuario=usuario )
+
+
+# PARA CERRAR SESION
+@blueprint.route('/logout')
+def logout():
+    session.clear()
+    flash("Sesión cerrada", "info")
+    return redirect(url_for('vista_usuarios.inicio'))
+
 
 # Ruta para mostrar el formulario de registro
 @blueprint.route('/registro', methods=['GET', 'POST'])
@@ -79,12 +87,6 @@ def login():
 
     return render_template('login.html')    
 
-# PARA CERRAR SESION
-@blueprint.route('/logout')
-def logout():
-    session.clear()
-    flash("Sesión cerrada", "info")
-    return redirect(url_for('vista_usuarios.inicio'))
 
 
 @blueprint.route('/recuperar', methods=['GET', 'POST'])

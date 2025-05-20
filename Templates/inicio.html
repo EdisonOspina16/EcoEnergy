@@ -397,6 +397,106 @@
                 top: 12px;
             }
         }
+
+        /* ESTILOS DEL MENÚ DESPLEGABLE (fuera del media query) */
+        .user-icon {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .user-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .user-icon i {
+            color: #00796b;
+            font-size: 1.2rem;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 20px;
+            top: 70px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            width: 250px;
+            overflow: hidden;
+            display: none;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-greeting {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #eee;
+            background: #f9f9f9;
+        }
+
+        .greeting-text {
+            color: #444;
+            font-weight: 500;
+        }
+
+        .menu-options {
+            padding: 10px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+            color: #333;
+        }
+
+        .menu-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .menu-item.logout-item {
+            color: #e74c3c;
+        }
+
+        .menu-item.logout-item:hover {
+            background-color: #fff1f0;
+        }
+
+        .menu-icon {
+            font-size: 1.2rem;
+            color: #00695c;
+            width: 24px;
+            text-align: center;
+        }
+
+        .menu-icon.logout-menu-icon {
+            color: #e74c3c;
+        }
+
+
+
+
+
     </style>
 </head>
 <body>
@@ -412,17 +512,46 @@
             <i class="fas fa-user"></i>
             Iniciar sesión / Registrarse
         </a>
+
+        
         {% else %}
-        <a href="{{ url_for('vista_usuarios.perfil') }}" class="auth-links">
-            <i class="fas fa-user-circle"></i>
-            Hola, {{ usuario.nombre }}
+        <div class="user-icon" id="userMenu">
+            <i class="fas fa-user"></i>
+        </div>
         </a>
         {% endif %}
     </div>
+
+        <div class="dropdown-menu" id="dropdownMenu">
+        <div class="user-greeting">
+            <div class="profile-pic" style="width: 40px; height: 40px;">
+                <i class="fas fa-user" style="font-size: 1.2rem;"></i>
+            </div>
+            <div class="greeting-text">Hola, {{ usuario.nombre }}</div>
+        </div>
+        <div class="menu-options">
+            <div class="menu-item" id="menuProfile">
+                <i class="fas fa-user-circle menu-icon"></i>
+                <span>Mi Perfil</span>
+            </div>
+            <div class="menu-item logout-item" id="menuLogout">
+                <i class="fas fa-sign-out-alt menu-icon logout-menu-icon"></i>
+                <span>Cerrar Sesión</span>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
     
     <div class="page-title">
         <h1>Calcula tus gastos energéticos</h1>
-        <p class="sub-heading"> MENOS EMISIONES, MENOS CONSUMO, MÁS SOSTENIBILIDAD</p>
+        <p class="sub-heading">MENOS EMISIONES, MENOS CONSUMO, MÁS SOSTENIBILIDAD</p>
     </div>
     
     <div class="container">
@@ -539,6 +668,41 @@
     </div>
     
     <script>
+    
+// Toda la parte del icono del perfil 
+    const userIcon = document.querySelector('.user-icon');
+    if (userIcon) {
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        
+        userIcon.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        // Cerrar el menú al hacer clic fuera
+        document.addEventListener('click', function() {
+            dropdownMenu.style.display = 'none';
+        });
+        
+        // Evitar cierre al hacer clic dentro
+        dropdownMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // Redirigir al perfil
+        document.getElementById('menuProfile').addEventListener('click', function() {
+            window.location.href = "{{ url_for('vista_usuarios.perfil') }}";
+        });
+        
+        // Cerrar sesión
+        document.getElementById('menuLogout').addEventListener('click', function() {
+            window.location.href = "{{ url_for('vista_usuarios.logout') }}";
+        });
+    }
+
+
+
+
     document.addEventListener('DOMContentLoaded', () => {
         const btnAdd = document.querySelector('.add-device-btn');
         const btnCalc = document.getElementById('calculate-btn');

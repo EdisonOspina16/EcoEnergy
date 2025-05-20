@@ -10,17 +10,27 @@ bp_admin = Blueprint('admin', __name__, template_folder= "Templates")
 def login_requerido(f):
     @wraps(f)
     def decorador(*args, **kwargs):
-        if not session.get('usuario'):               
-            flash("Debes iniciar sesión para acceder a esta página", "warning")
+        if 'usuario' not in session:
+            flash('Debes iniciar sesión para acceder a esta página', 'danger')
             return redirect(url_for('vista_usuarios.login'))
+        
+        # Verificar si es admin
+        if not session['usuario'].get('es_admin'):
+            flash('No tienes permisos de administrador', 'danger')
+            return redirect(url_for('vista_usuarios.inicio'))
+            
         return f(*args, **kwargs)
     return decorador
 
+    
 @bp_admin.route('/admin')
 @login_requerido
 def inicio_admin():
     productos = cd.obtener_dispositivos()
-    return render_template('admin.html', productos = productos)
+    usuario = session.get('usuario')  
+    return render_template('admin.html', 
+                         productos=productos,
+                         usuario=usuario)  
 
 
 @bp_admin.route('/api/dispositivos', methods=['POST'])
