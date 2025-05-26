@@ -6,7 +6,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from controller.controladorUsuarios import registrar_usuario, verificar_credenciales, actualizar_contraseña, obtener_usuario_por_id
 from controller import controladorDispositivos as cd 
 
-blueprint = Blueprint('vista_usuarios', __name__, template_folder= "Templates")
+blueprint = Blueprint('vista_usuarios', __name__, template_folder="Templates")
 
 
 # para que no lo deje ver el perfil si el usario no esta iniciado 
@@ -53,7 +53,13 @@ def registro():
         correo = request.form['correo']
         contraseña = request.form['contraseña']
 
-        exito = registrar_usuario(nombre, correo, contraseña)
+        # Datos NUEVOS requeridos en la segunda vista
+        telefono = request.form.get('telefono')
+        direccion = request.form.get('direccion')
+        ciudad = request.form.get('ciudad')
+        estrato = request.form.get('estrato')
+
+        exito = registrar_usuario(nombre, correo, contraseña, telefono, direccion, ciudad, estrato)
 
         if exito:
             flash("Usuario registrado con éxito", "success")
@@ -104,8 +110,7 @@ def recuperar():
 
     return render_template('recuperar.html')
 
-# -----------------------------------------
-# FUNCIONES BLUEPRINTS PARA VISTA USUARIOS.     
+    
 # -----------------------------------------
 
 #perfil-------------------------
@@ -116,3 +121,7 @@ def perfil():
     #print(usuario)
     return render_template('perfil.html', usuario=usuario)
 
+# -----------------------------------------
+@blueprint.route('/registro-paso2')
+def registro_paso2():
+    return render_template('registro_paso2.html')

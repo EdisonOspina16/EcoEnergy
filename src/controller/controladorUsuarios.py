@@ -48,20 +48,32 @@ def crear_usuario(nombre, correo, contraseña):
             conn.close()
     return False
 
-
 def obtener_usuario_por_correo(correo):
     conn = obtener_conexion()
     if conn:
         try:
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute("SELECT * FROM usuarios WHERE correo = %s", (correo,))
-                return cur.fetchone()
+                usuario = cur.fetchone()
+                if usuario:
+                    return {
+                        'id': usuario['id'],
+                        'nombre': usuario['nombre'],
+                        'correo': usuario['correo'],
+                        'contraseña': usuario['contraseña'],
+                        'fecha_registro': usuario['fecha_registro'],
+                        'es_admin': usuario['es_admin'],
+                        'telefono': usuario.get('telefono'),
+                        'direccion': usuario.get('direccion'),
+                        'ciudad': usuario.get('ciudad'),
+                        'estrato': usuario.get('estrato')
+                    }
+                return None
         except Exception as e:
             print("Error al obtener usuario:", e)
         finally:
             conn.close()
     return None
-
 
 def actualizar_usuario(correo, nuevo_nombre, nueva_contraseña):
     """
@@ -103,9 +115,9 @@ def eliminar_usuario(correo):
 # FUNCIONES DEL REGISTRO, LOGIN, RECUPERAR
 # -----------------------------------------
 
-def registrar_usuario(nombre, correo, contraseña):
+def registrar_usuario(nombre, correo, contraseña, telefono=None, direccion=None, ciudad=None, estrato=None):
     """
-    Registra un usuario nuevo con contraseña hasheada.
+    Registra un usuario nuevo con contraseña hasheada y datos adicionales.
     """
     try:
         conn = obtener_conexion()
@@ -114,9 +126,9 @@ def registrar_usuario(nombre, correo, contraseña):
         hash_contraseña = generate_password_hash(contraseña)
 
         cur.execute("""
-            INSERT INTO usuarios (nombre, correo, contraseña)
-            VALUES (%s, %s, %s)
-        """, (nombre, correo, hash_contraseña))
+            INSERT INTO usuarios (nombre, correo, contraseña, telefono, direccion, ciudad, estrato)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """, (nombre, correo, hash_contraseña, telefono, direccion, ciudad, estrato))
 
         conn.commit()
         cur.close()
@@ -129,7 +141,7 @@ def registrar_usuario(nombre, correo, contraseña):
 
 def obtener_usuarios():
     """
-    Retorna una lista de objetos Usuario.
+    Retorna una lista de objetos Usuario con todos los campos.
     """
     usuarios = []
     try:
@@ -145,7 +157,12 @@ def obtener_usuarios():
                 nombre=fila['nombre'],
                 correo=fila['correo'],
                 contraseña=fila['contraseña'],
-                fecha_registro=fila['fecha_registro']
+                fecha_registro=fila['fecha_registro'],
+                es_admin=fila.get('es_admin', False),
+                telefono=fila.get('telefono'),
+                direccion=fila.get('direccion'),
+                ciudad=fila.get('ciudad'),
+                estrato=fila.get('estrato')
             )
             usuarios.append(usuario)
 
@@ -155,10 +172,10 @@ def obtener_usuarios():
         print(f"Error al obtener usuarios: {e}")
     return usuarios
 
-
 def verificar_credenciales(correo, contraseña_input):
     """
     Verifica si el correo y la contraseña (comparada con hash) coinciden.
+    Retorna objeto Usuario con todos los campos.
     """
     try:
         conn = obtener_conexion()
@@ -177,13 +194,16 @@ def verificar_credenciales(correo, contraseña_input):
                 correo=usuario['correo'],
                 contraseña=usuario['contraseña'],
                 es_admin=usuario['es_admin'],
-                fecha_registro=usuario.get('fecha_registro')
+                fecha_registro=usuario.get('fecha_registro'),
+                telefono=usuario.get('telefono'),
+                direccion=usuario.get('direccion'),
+                ciudad=usuario.get('ciudad'),
+                estrato=usuario.get('estrato')
             )
         return None
     except Exception as e:
         print(f"Error en login: {e}")
         return None
-
 
 def actualizar_contraseña(correo, nueva_contraseña):
     """
@@ -211,8 +231,7 @@ def actualizar_contraseña(correo, nueva_contraseña):
 
 
 #para mostrar los datos del usuario 
-def obtener_usuario_por_id (id_usuario):
-    
+def obtener_usuario_por_id(id_usuario):
     try:
         conn = obtener_conexion()
         cur = conn.cursor(cursor_factory=RealDictCursor)
@@ -229,9 +248,39 @@ def obtener_usuario_por_id (id_usuario):
                 nombre=fila['nombre'],
                 correo=fila['correo'],
                 contraseña=fila['contraseña'],
-                fecha_registro=fila['fecha_registro']
+                fecha_registro=fila['fecha_registro'],
+                es_admin=fila.get('es_admin', False),
+                telefono=fila.get('telefono'),
+                direccion=fila.get('direccion'),
+                ciudad=fila.get('ciudad'),
+                estrato=fila.get('estrato')
             )
     except Exception as e:
         print(f"Error al obtener usuario por ID: {e}")
     return None
 
+def actualizar_datos_adicionales(correo, telefono, direccion, ciudad, estrato):
+    """
+    Actualiza los datos adicionales del usuario.
+    """
+    try:
+        conn = obtener_conexion()
+        cur = conn.cursor()
+
+        cur.execute("""
+            UPDATE usuarios
+            SET telefono = %s,
+                direccion = %s,
+                ciudad = %s,
+                estrato = %s
+            WHERE correo = %s
+        """, (telefono, direccion, ciudad, estrato, correo))
+
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return cur.rowcount > 0
+    except Exception as e:
+        print(f"Error al actualizar datos adicionales: {e}")
+        return False
