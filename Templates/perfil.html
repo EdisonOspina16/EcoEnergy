@@ -17,7 +17,6 @@
             background: linear-gradient(135deg, #f5f9f8, #e0f2f1);
             min-height: 100vh;
             color: #333;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .header {
@@ -120,29 +119,6 @@
             color: #444;
         }
         
-        .edit-btn {
-            background: linear-gradient(135deg, #00796b, #00695c);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .edit-btn:hover {
-            background: linear-gradient(135deg, #00897b, #00796b);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-        
         .info-section {
             background-color: white;
             margin: 0 20px 20px;
@@ -159,7 +135,6 @@
             align-items: center;
             gap: 15px;
             padding: 15px;
-            cursor: pointer;
             transition: all 0.3s;
             border-radius: 12px;
             border: 1px solid transparent;
@@ -206,6 +181,11 @@
             color: #666;
         }
         
+        .info-value span.not-specified {
+            color: #999;
+            font-style: italic;
+        }
+        
         .privacy-section {
             background-color: white;
             margin: 0 20px 20px;
@@ -232,12 +212,10 @@
             padding: 15px;
             border-radius: 12px;
             transition: all 0.3s;
-            border: 1px solid transparent;
         }
         
         .delete-account:hover {
             background-color: #fff1f0;
-            border: 1px solid #ffcccc;
         }
         
         .delete-icon {
@@ -272,12 +250,6 @@
             overflow: hidden;
             display: none;
             z-index: 100;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         
         .user-greeting {
@@ -287,11 +259,6 @@
             gap: 15px;
             border-bottom: 1px solid #eee;
             background: #f9f9f9;
-        }
-        
-        .greeting-text {
-            color: #444;
-            font-weight: 500;
         }
         
         .menu-options {
@@ -306,7 +273,6 @@
             cursor: pointer;
             border-radius: 8px;
             transition: all 0.3s;
-            color: #333;
         }
         
         .menu-item:hover {
@@ -325,190 +291,12 @@
             font-size: 1.2rem;
             color: #00695c;
             width: 24px;
-            text-align: center;
         }
         
         .menu-icon.logout-menu-icon {
             color: #e74c3c;
         }
-        
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .modal-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .modal-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #00695c;
-        }
-        
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #888;
-            transition: color 0.3s;
-        }
-        
-        .close-modal:hover {
-            color: #333;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            color: #555;
-        }
-        
-        input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-        
-        input:focus {
-            outline: none;
-            border-color: #00695c;
-            box-shadow: 0 0 0 2px rgba(0, 105, 92, 0.2);
-        }
-        
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 15px;
-            margin-top: 25px;
-        }
-        
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-        
-        .btn-cancel {
-            background-color: #f5f5f5;
-            color: #333;
-        }
-        
-        .btn-cancel:hover {
-            background-color: #e0e0e0;
-        }
-        
-        .btn-save {
-            background: linear-gradient(135deg, #00796b, #00695c);
-            color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-save:hover {
-            background: linear-gradient(135deg, #00897b, #00796b);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-        
-        .btn-delete {
-            background-color: #e74c3c;
-            color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-delete:hover {
-            background-color: #c0392b;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-        
-        /* Delete confirmation modal */
-        .delete-modal .modal-content {
-            max-width: 450px;
-        }
-        
-        .delete-modal .modal-body {
-            text-align: center;
-            margin: 25px 0;
-        }
-        
-        .delete-modal .modal-footer {
-            justify-content: center;
-        }
-        
-        .warning-icon {
-            font-size: 3rem;
-            color: #e74c3c;
-            margin-bottom: 15px;
-        }
-        
-        /* Toast notifications */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            z-index: 2000;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.3s, transform 0.3s;
-        }
-        
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .toast.error {
-            background-color: #e74c3c;
-        }
-        
+
         @media (max-width: 768px) {
             .info-section {
                 grid-template-columns: 1fr;
@@ -522,16 +310,6 @@
             .profile-section {
                 flex-direction: column;
                 gap: 20px;
-                text-align: center;
-            }
-            
-            .profile-email {
-                flex-direction: column;
-            }
-            
-            .edit-btn {
-                width: 100%;
-                justify-content: center;
             }
         }
     </style>
@@ -563,42 +341,102 @@
                 <span style="color: #777; font-size: 0.9rem;">Usuario activo</span>
             </div>
         </div>
-        <!--
-        <button class="edit-btn" id="editProfileBtn">
-            <i class="fas fa-pencil-alt"></i>
-            Editar perfil
-        </button>
-        -->
     </div>
     
     <div class="info-section">
-        <div class="info-item" id="editPersonalData">
+        <!-- Información Básica -->
+        <div class="info-item">
             <div class="icon-container">
                 <i class="fas fa-user icon"></i>
             </div>
             <div class="info-content">
-                <div class="info-title">DATOS PERSONALES</div>
-                <div class="info-value" id="personalDataValue">{{ usuario.nombre }}</div>
+                <div class="info-title">NOMBRE COMPLETO</div>
+                <div class="info-value">{{ usuario.nombre }}</div>
             </div>
         </div>
         
-        <div class="info-item" id="editEmail">
+        <div class="info-item">
             <div class="icon-container">
                 <i class="fas fa-envelope icon"></i>
             </div>
             <div class="info-content">
                 <div class="info-title">EMAIL</div>
-                <div class="info-value" id="emailValue">{{ usuario.correo }}</div>
+                <div class="info-value">{{ usuario.correo }}</div>
             </div>
         </div>
         
-        <div class="info-item" id="editPassword">
+        <div class="info-item">
             <div class="icon-container">
                 <i class="fas fa-lock icon"></i>
             </div>
             <div class="info-content">
                 <div class="info-title">CONTRASEÑA</div>
                 <div class="info-value">●●●●●●●●●●</div>
+            </div>
+        </div>
+
+        <!-- Información Adicional -->
+        <div class="info-item">
+            <div class="icon-container">
+                <i class="fas fa-phone icon"></i>
+            </div>
+            <div class="info-content">
+                <div class="info-title">TELÉFONO</div>
+                <div class="info-value">
+                    {% if usuario.telefono %}
+                        {{ usuario.telefono }}
+                    {% else %}
+                        <span class="not-specified">No especificado</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-item">
+            <div class="icon-container">
+                <i class="fas fa-map-marker-alt icon"></i>
+            </div>
+            <div class="info-content">
+                <div class="info-title">DIRECCIÓN</div>
+                <div class="info-value">
+                    {% if usuario.direccion %}
+                        {{ usuario.direccion }}
+                    {% else %}
+                        <span class="not-specified">No especificada</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-item">
+            <div class="icon-container">
+                <i class="fas fa-city icon"></i>
+            </div>
+            <div class="info-content">
+                <div class="info-title">CIUDAD</div>
+                <div class="info-value">
+                    {% if usuario.ciudad %}
+                        {{ usuario.ciudad }}
+                    {% else %}
+                        <span class="not-specified">No especificada</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-item">
+            <div class="icon-container">
+                <i class="fas fa-building icon"></i>
+            </div>
+            <div class="info-content">
+                <div class="info-title">ESTRATO</div>
+                <div class="info-value">
+                    {% if usuario.estrato %}
+                        {{ usuario.estrato }}
+                    {% else %}
+                        <span class="not-specified">No especificado</span>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
@@ -615,8 +453,6 @@
             </div>
         </div>
     </div>
-
-
     
     <div class="dropdown-menu" id="dropdownMenu">
         <div class="user-greeting">
@@ -636,152 +472,33 @@
             </div>
         </div>
     </div>
-    
 
-
-
-
-
-
-
-
-    
-    <!-- Personal Data Modal -->
-    <div class="modal" id="personalDataModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Datos Personales</div>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="form-group">
-                <label for="name">Nombre</label>
-                <input type="text" id="name" placeholder="Ingresa tu nombre" value="{{ usuario.nombre }}">
-            </div>
-            <div class="form-group">
-                <label for="lastName">Apellido</label>
-                <input type="text" id="lastName" placeholder="Ingresa tu apellido">
-            </div>
-            <div class="form-group">
-                <label for="address">Dirección</label>
-                <input type="text" id="address" placeholder="Ingresa tu dirección">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-cancel closeModal">Cancelar</button>
-                <button class="btn btn-save" id="savePersonalData">Guardar</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Email Modal -->
-    <div class="modal" id="emailModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Email</div>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="form-group">
-                <label for="email">Correo electrónico</label>
-                <input type="email" id="email" value="{{ usuario.correo }}">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-cancel closeModal">Cancelar</button>
-                <button class="btn btn-save" id="saveEmail">Guardar</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Password Modal -->
-    <div class="modal" id="passwordModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Cambiar Contraseña</div>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="form-group">
-                <label for="currentPassword">Contraseña actual</label>
-                <input type="password" id="currentPassword" placeholder="Ingresa tu contraseña actual">
-            </div>
-            <div class="form-group">
-                <label for="newPassword">Nueva contraseña</label>
-                <input type="password" id="newPassword" placeholder="Ingresa tu nueva contraseña">
-            </div>
-            <div class="form-group">
-                <label for="confirmPassword">Confirmar contraseña</label>
-                <input type="password" id="confirmPassword" placeholder="Confirma tu nueva contraseña">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-cancel closeModal">Cancelar</button>
-                <button class="btn btn-save" id="savePassword">Guardar cambios</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Delete Account Modal -->
-    <div class="modal delete-modal" id="deleteModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Eliminar cuenta</div>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="warning-icon">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <p style="font-size: 1.1rem; font-weight: 500; margin-bottom: 10px;">¿Estás seguro de que deseas eliminar tu cuenta?</p>
-                <p class="delete-warning">Esta acción es permanente y no se puede deshacer. Todos tus datos y configuraciones se perderán.</p>
-                
-                <div class="form-group" style="margin-top: 20px;">
-                    <label for="deletePassword">Para confirmar, ingresa tu contraseña</label>
-                    <input type="password" id="deletePassword" placeholder="Ingresa tu contraseña">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-cancel closeModal">Cancelar</button>
-                <button class="btn btn-delete" id="confirmDelete">Eliminar mi cuenta</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Toast notifications -->
-    <div class="toast" id="successToast">
-        <i class="fas fa-check-circle"></i>
-        <span id="toastMessage">Cambios guardados correctamente</span>
-    </div>
-    
-    <div class="toast error" id="errorToast">
-        <i class="fas fa-exclamation-circle"></i>
-        <span id="errorToastMessage">Ha ocurrido un error</span>
-    </div>
-
-<script>
-    // User menu toggle
-    const userIcon = document.querySelector('.user-icon');
-    const dropdownMenu = document.querySelector('.dropdown-menu');
-    
-    userIcon.addEventListener('click', function(e) {
-        e.stopPropagation(); // Evita que el clic se propague al documento
-        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-    });
-    
-    // Cerrar el menú al hacer clic fuera de él
-    document.addEventListener('click', function() {
-        dropdownMenu.style.display = 'none';
-    });
-    
-    // Evitar que el menú se cierre al hacer clic dentro de él
-    dropdownMenu.addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
-    
-    // Funcionalidad PERFIL
-    document.getElementById('menuProfile').addEventListener('click', function() {
-        window.location.href = "{{ url_for('vista_usuarios.perfil') }}";
-    });
-    
-    // Cerrar sesión (usando tu ruta de Flask)
-    document.getElementById('menuLogout').addEventListener('click', function() {
-        window.location.href = "{{ url_for('vista_usuarios.logout') }}";
-    });
-</script>
-
+    <script>
+        // User menu toggle
+        document.getElementById('userMenu').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const menu = document.getElementById('dropdownMenu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        // Cerrar menú al hacer clic fuera
+        document.addEventListener('click', function() {
+            document.getElementById('dropdownMenu').style.display = 'none';
+        });
+        
+        // Evitar que el menú se cierre al hacer clic dentro
+        document.getElementById('dropdownMenu').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // Navegación
+        document.getElementById('menuProfile').addEventListener('click', function() {
+            window.location.href = "{{ url_for('vista_usuarios.perfil') }}";
+        });
+        
+        document.getElementById('menuLogout').addEventListener('click', function() {
+            window.location.href = "{{ url_for('vista_usuarios.logout') }}";
+        });
+    </script>
+</body>
 </html>
