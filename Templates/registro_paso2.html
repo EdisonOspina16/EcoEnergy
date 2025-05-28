@@ -249,7 +249,7 @@
             <div class="step active">2</div>
         </div>
         
-        <form method="POST" action="{{ url_for('vista_usuarios.registro') }}">
+        <form action="{{ url_for('vista_usuarios.registro_paso2') }}" method="POST">
             <!-- Campos ocultos para los datos del primer paso -->
             <input type="hidden" name="nombre" value="{{ request.form.nombre }}">
             <input type="hidden" name="correo" value="{{ request.form.correo }}">
@@ -297,6 +297,7 @@
     </div>
 
     <script>
+
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.querySelector('form');
             form.style.opacity = '0';
@@ -308,11 +309,6 @@
                 form.style.transform = 'translateY(0)';
             }, 200);
 
-            
-
-
-
-            
         });
     </script>
 </body>

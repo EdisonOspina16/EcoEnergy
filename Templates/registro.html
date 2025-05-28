@@ -296,7 +296,7 @@
             <div class="step">2</div>
         </div>
         
-        <form id="registroForm">
+        <form id="registroForm" action="{{ url_for('vista_usuarios.registro') }}" method="POST" >
             <div class="input-group">
                 <i class="fas fa-user input-icon"></i>
                 <input type="text" name="nombre" class="icon-input" placeholder="Nombre completo" required>
@@ -322,7 +322,7 @@
                 Al registrarte, aceptas nuestros términos y condiciones de uso.
             </p>
             
-            <button type="button" id="siguienteBtn">
+            <button type="submit" id="siguienteBtn">
                 <i class="fas fa-arrow-right" style="margin-right: 8px;"></i>
                 SIGUIENTE
             </button>
@@ -347,12 +347,6 @@
                 form.style.opacity = '1';
                 form.style.transform = 'translateY(0)';
             }, 200);
-
-            // Nuevo código para manejar el botón Siguiente
-            document.getElementById('siguienteBtn').addEventListener('click', function() {
-                // Redirección a la segunda vista
-                window.location.href = "{{ url_for('vista_usuarios.registro_paso2') }}";
-            });
         });
     </script>
 </body>
